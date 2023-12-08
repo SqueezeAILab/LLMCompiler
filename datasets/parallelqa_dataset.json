@@ -1,0 +1,680 @@
+[
+    {
+        "id": "1",
+        "question": "If Mariana Trench was 20% shallower and the Puerto Rico Trench was 20% deeper, which one would be shallower?",
+        "answer": "Mariana Trench",
+        "branch": 2
+    },
+    {
+        "id": "2",
+        "question": "Considering a cheetah that runs 20% faster and a peregrine falcon flying 30% slower compared to their maximum velocity, which one is faster?",
+        "answer": "peregrine falcon",
+        "branch": 2
+    },
+    {
+        "id": "3",
+        "question": "With the Sahara Desert's area reduced by 30% and the Kalahari Desert's area magnified by 3.5 times, which one covers more ground?",
+        "answer": "Sahara Desert",
+        "branch": 2
+    },
+    {
+        "id": "4",
+        "question": "Given the Yangtze River shortened by 15% and the Mississippi River extended by 20%, which river becomes shorter?",
+        "answer": "Mississippi River",
+        "branch": 2
+    },
+    {
+        "id": "5",
+        "question": "Take Mount Everest, subtract 10% of its height, then increase Mount Kilimanjaro's height by the same fraction. Which mountain stands taller?",
+        "answer": "Mount Everest",
+        "branch": 2
+    },
+    {
+        "id": "6",
+        "question": "After increasing the height of Christ the Redeemer by 60% and decreasing the height of the Statue of Unity by 30%, which statue would dominate in height?",
+        "answer": "Statue of Unity",
+        "branch": 2
+    },
+    {
+        "id": "7",
+        "question": "If the Shanghai Tower's height were increased by 20%, and the Ostankino Tower's height grew by 50%, which tower would stand the tallest?",
+        "answer": "Ostankino Tower",
+        "branch": 2
+    },
+    {
+        "id": "8",
+        "question": "If the Amazon Rainforest shrunk by 35%, and the Congo Rainforest expanded by 45%, which forest would be larger?",
+        "answer": "Amazon Rainforest",
+        "branch": 2
+    },
+    {
+        "id": "9",
+        "question": "If the Pacific Ocean shrank by 1.5 times and the Indian Ocean expands by 2.5 times, which ocean will have larger area?",
+        "answer": "Indian Ocean",
+        "branch": 2
+    },
+    {
+        "id": "10",
+        "question": "If Vietnam's population decreases by 10% while Thailand's population decreases by 5%, which country will have a higher population?",
+        "answer": "Vietnam",
+        "branch": 2
+    },
+    {
+        "id": "11",
+        "question": "If the depth of the Mariana Trench increased by 15% and the depth of the Puerto Rico Trench decreased by 20%, how much deeper the Mariana Trench would be in meters?",
+        "answer": "5931.80",
+        "branch": 2
+    },
+    {
+        "id": "12",
+        "question": "If Mount Everest were 2.5 times higher, how many times would we need to stack the Burj Khalifa to match that height if it were 3.5 times its current height?",
+        "answer": "7.61",
+        "branch": 2
+    },
+    {
+        "id": "13",
+        "question": "If the size of the Sahara Desert increased by 10% and the Sonoran Desert decreased by 5%, what would be the ratio of the Sahara Desert's size to the Sonoran Desert's size after these adjustments?",
+        "answer": "40.9",
+        "branch": 2
+    },
+    {
+        "id": "14",
+        "question": "If the Yangtze River is lengthened by 10% and the Mississippi River is shortened by 5%, what would be the ratio of their lengths?",
+        "answer": "1.94",
+        "branch": 2
+    },
+    {
+        "id": "15",
+        "question": "If Mount Everest is increased in height by 2% and Mount Kilimanjaro shrinks by 3%, what would be the difference in their heights in meters?",
+        "answer": "3307",
+        "branch": 2
+    },
+    {
+        "id": "16",
+        "question": "Given that the height of the Christ the Redeemer statue increased by 5% and the Statue of Unity decreased by 10%, what is the combined height of both statues after the adjustments?",
+        "answer": "201.9",
+        "branch": 2
+    },
+    {
+        "id": "17",
+        "question": "Given the following adjustments to building/tower heights: 1. If the height of the Burj Khalifa decreased by 5% 2. and the height of the Tokyo Skytree increased by 7%, what would be the difference in height between these two structures after the adjustments in meters?",
+        "answer": "110.12",
+        "branch": 2
+    },
+    {
+        "id": "18",
+        "question": "Given the following adjustments: the Amazon Rainforest decreased in size by 15%, and the Black Forest increased in size by 25%, compute the ratio of the area of the largest forest to the smallest forest after the adjustments.",
+        "answer": "622.33",
+        "branch": 2
+    },
+    {
+        "id": "19",
+        "question": "After the Atlantic Ocean increased in size by 10% and the Arctic Ocean decreased by 15%, what is the ratio of the size of the largest ocean to the smallest ocean?",
+        "answer": "7.84",
+        "branch": 2
+    },
+    {
+        "id": "20",
+        "question": "If Vietnam's population grows by 10% and Japan's decreases by 5%, what would the combined population of both countries be in millions?",
+        "answer": "228.75",
+        "branch": 2
+    },
+    {
+        "id": "21",
+        "question": "If Texas and Florida were to merge and become one state, what would be the difference in population density between the new state and California? Answer in people / square km.",
+        "answer": "32.86",
+        "branch": 2
+    },
+    {
+        "id": "22",
+        "question": "If the depth of the Mariana Trench were 15% shallower, the depth of the Puerto Rico Trench were 25% deeper, and the depth of the Sunda Trench increased by 20%, which trench would be the deepest?",
+        "answer": "Puerto Rico Trench",
+        "branch": 3
+    },
+    {
+        "id": "23",
+        "question": "Given that a greyhound enhances its maximum speed by 18%, a gazelle improves its maximum sprint by 22%, and a peregrine falcon decreases its maximum flight velocity by 15%, which among them would be slowest?",
+        "answer": "greyhound",
+        "branch": 3
+    },
+    {
+        "id": "24",
+        "question": "With the Sahara Desert's area reduced by half, the Kalahari Desert's area increased by 20%, and the Sonoran Desert's area expanded by 2.5 times, which desert becomes the smallest?",
+        "answer": "Sonoran Desert",
+        "branch": 3
+    },
+    {
+        "id": "25",
+        "question": "If the Yangtze River were shortened by 10%, while the Volga River grew by 20% and the Mekong River was shortened by 15%, which among them would boast the greatest length?",
+        "answer": "Yangtze River",
+        "branch": 3
+    },
+    {
+        "id": "26",
+        "question": "If the height of Mount Kilimanjaro is increased by 12%, Aconcagua is reduced by 15%, and Mount Elbert grows by 25%, which mountain stands the shortest?",
+        "answer": "Mount Elbert",
+        "branch": 3
+    },
+    {
+        "id": "27",
+        "question": "If we were to enhance the height of Christ the Redeemer by 50%, reduce the Statue of Unity by 30%, and reduce the Washington Monument by 40%, which monument would tower the highest?",
+        "answer": "Statue of Unity",
+        "branch": 3
+    },
+    {
+        "id": "28",
+        "question": "If the Empire State Building's height were increased by 50%, the Tokyo Skytree's height grew by 30%, and the CN Tower's height rose by 40%, which tower would become the shortest?",
+        "answer": "Empire State Building",
+        "branch": 3
+    },
+    {
+        "id": "29",
+        "question": "If the Amazon Rainforest expanded by 25%, the Congo Rainforest shrunk by 15%, and the Australian Forest grew by 35%, which forest now covers the least land?",
+        "answer": "Congo Rainforest",
+        "branch": 3
+    },
+    {
+        "id": "30",
+        "question": "In a situation where the Arctic Ocean enlarges by 12%, the Southern Ocean swells by 20%, and the Atlantic Ocean diminishes by 9%, which ocean has the smallest area?",
+        "answer": "Arctic Ocean",
+        "branch": 3
+    },
+    {
+        "id": "31",
+        "question": "Given that South Korea's population grows by 20%, Japan's grows by 5%, and China's grows by 10%, which country has the least populous count?",
+        "answer": "South Korea",
+        "branch": 3
+    },
+    {
+        "id": "32",
+        "question": "Suppose the depth of the Mariana Trench decreases by 30%, while the depths of the Puerto Rico Trench and the Sunda Trench increase by 30% and 10% respectively. What would be the difference in meters between the deepest and shallowest of these trenches after the changes?",
+        "answer": "3200",
+        "branch": 3
+    },
+    {
+        "id": "33",
+        "question": "If Mount Everest were 1.4 times taller, the Empire State Building were 20% taller, and the CN Tower were 10% taller, how many times would we need to stack the shorter of the Empire State Building and the CN Tower to match the new height of Mount Everest?",
+        "answer": "23.27",
+        "branch": 3
+    },
+    {
+        "id": "34",
+        "question": "Given the adjustments to desert sizes: The Sahara Desert size increased by 5%, the Arabian Desert size decreased by 20%, and the Atacama Desert size doubled, what would be the ratio between the largest desert and the smallest desert after the adjustments?",
+        "answer": "46",
+        "branch": 3
+    },
+    {
+        "id": "35",
+        "question": "Given that the length of the Mekong River increases by 7%, the Volga River shortens by 8%, and the Congo River lengthens by 12%, what is the difference in kilometers between the longest and shortest rivers?",
+        "answer": "2015.48",
+        "branch": 3
+    },
+    {
+        "id": "36",
+        "question": "Given that Aconcagua increases in height by 5%, K2 decreases by 4%, and Mount Elbert grows by 10%, what would be the ratio between the heights of the tallest and shortest mountains?",
+        "answer": "1.71",
+        "branch": 3
+    },
+    {
+        "id": "37",
+        "question": "If the Washington Monument increased in height by 15%, the Motherland Calls statue decreased by 5%, and the Ushiku Daibutsu increased by 8%, what is the average height of these three monuments after the adjustments in meters?",
+        "answer": "134.9",
+        "branch": 3
+    },
+    {
+        "id": "38",
+        "question": "If the height of the Empire State Building increased by 10%, the height of the CN Tower decreased by 5%, and the height of the Shanghai Tower increased by 8%, what would be the difference between the tallest and shortest among these three after the adjustments in meters?",
+        "answer": "195.04",
+        "branch": 3
+    },
+    {
+        "id": "39",
+        "question": "If the Congo Rainforest contracts by 12%, the Borneo Forest grows by 10%, and the Black Forest doubles in size, what is the ratio of the largest to the smallest among them?",
+        "answer": "146.4",
+        "branch": 3
+    },
+    {
+        "id": "40",
+        "question": "The Pacific Ocean expands by 12%, the Indian Ocean contracts by 10%, and the Southern Ocean grows by 20%. What's the average size of the largest and smallest oceans in square kilometers after these changes?",
+        "answer": "104736200",
+        "branch": 3
+    },
+    {
+        "id": "41",
+        "question": "If Thailand's population increases by 8%, South Korea's decreases by 7%, and China's grows by 3%, what is the average population of these three countries after the changes, in millions?",
+        "answer": "522",
+        "branch": 3
+    },
+    {
+        "id": "42",
+        "question": "What is the minimum depth difference in meters between the Mariana Trench and the Puerto Rico Trench, and between the Puerto Rico Trench and the Sunda Trench?",
+        "answer": "1086",
+        "branch": 3
+    },
+    {
+        "id": "43",
+        "question": "Calculate the smaller ratio between the depth of the Mariana Trench and the Puerto Rico Trench, and between the depth of the South Sandwich Trench and the Sunda Trench.",
+        "answer": "1.125",
+        "branch": 3
+    },
+    {
+        "id": "44",
+        "question": "Among the area ratios of the Sahara Desert to the Arabian Desert, and the Arabian Desert to the Kalahari Desert, which value is the smallest?",
+        "answer": "2.59",
+        "branch": 3
+    },
+    {
+        "id": "45",
+        "question": "What is the larger ratio between the length of the Yangtze River and the Mekong River, and the Mekong River and the Congo River?",
+        "answer": "1.284",
+        "branch": 3
+    },
+    {
+        "id": "46",
+        "question": "What is the smaller height difference in meters between Mount Everest and K2, and between Aconcagua and Mount Kilimanjaro?",
+        "answer": "237",
+        "branch": 3
+    },
+    {
+        "id": "47",
+        "question": "What is the smaller ratio when comparing the height of the Statue of Unity to the Washington Monument, and when comparing the height of the Ushiku Daibutsu to the Motherland Calls statue?",
+        "answer": "1.07",
+        "branch": 3
+    },
+    {
+        "id": "48",
+        "question": "Which value is larger: the height difference in meters between the Burj Khalifa and the CN Tower, or the height difference in meters between the Tokyo Skytree and the Shanghai Tower?",
+        "answer": "276.7",
+        "branch": 3
+    },
+    {
+        "id": "49",
+        "question": "What is the greater ratio between the area of the Amazon Rainforest to the Congo Rainforest, and between the area of the Congo Forest to the Borneo Rainforest?",
+        "answer": "2.67",
+        "branch": 3
+    },
+    {
+        "id": "50",
+        "question": "What is larger: the average size of the Atlantic Ocean and the Indian Ocean in squre kilometers or the average size of the Arctic Ocean and the Southern Ocean in squre kilometers?",
+        "answer": "77846500",
+        "branch": 3
+    },
+    {
+        "id": "51",
+        "question": "What is the smaller ratio between the population of China and Vietnam, and between the population of Japan and South Korea?",
+        "answer": "2.404",
+        "branch": 3
+    },
+    {
+        "id": "52",
+        "question": "If Texas and Florida were to merge and become one state, as well as California and Michigan, what would be the largest population density among these 2 new states? Answer in people / square km.",
+        "answer": "72.73",
+        "branch": 3
+    },
+    {
+        "id": "53",
+        "question": "Assuming the Mariana Trench's depth was reduced by 25%, the Puerto Rico Trench deepened by 15%, the Sunda Trench shortened by 10%, and the South Sandwich Trench expanded by 20% in depth, which trench would surpass the others in depth?",
+        "answer": "South Sandwich Trench",
+        "branch": 4
+    },
+    {
+        "id": "54",
+        "question": "Taking into account a cheetah that accelerates its maximum sprint by 30%, a peregrine falcon whose maximum flight speed drops by 15%, an ostrich enhancing its maximum pace by 20%, and a greyhound boosting its fastest speed by 18%, which animal emerges as the fastest?",
+        "answer": "peregrine falcon",
+        "branch": 4
+    },
+    {
+        "id": "55",
+        "question": "If the Sahara Desert's size shrank to one-fifth its current area, the Kalahari Desert's area grew by 20%, the Sonoran Desert's area increased by 2.5 times, and the Arabian Desert's area increased by 50%, which desert spans the least ground?",
+        "answer": "Sonoran Desert",
+        "branch": 4
+    },
+    {
+        "id": "56",
+        "question": "After shortening the Yangtze River by 10%, extending the Mississippi River by 22%, increasing the Volga River's length by 5%, and expanding the Mekong River by 18%, which of these rivers would then be the shortest?",
+        "answer": "Volga River",
+        "branch": 4
+    },
+    {
+        "id": "57",
+        "question": "If the height of Mount Kilimanjaro is increased by 35%, Aconcagua grows taller by 50%, and K2 shrinks by 20%, while Mount Elbert doubles in height, which mountain stands the tallest?",
+        "answer": "Aconcagua",
+        "branch": 4
+    },
+    {
+        "id": "58",
+        "question": "After elevating the height of Christ the Redeemer by 45%, the Statue of Unity by 20%, the Washington Monument by 30%, and the Ushiku Daibutsu by 25%, which monument would tower the shortest?",
+        "answer": "Christ the Redeemer",
+        "branch": 4
+    },
+    {
+        "id": "59",
+        "question": "If the Empire state building's height were tripled, the Tokyo Skytree's height doubled, the CN Tower's height quadrupled, and the Ostankino Tower's height was multiplied by five, which tower would be the shortest?",
+        "answer": "Tokyo Skytree",
+        "branch": 4
+    },
+    {
+        "id": "60",
+        "question": "With the Amazon Rainforest shrunk by 50%, the Congo Rainforest shrunk by 10%, the Australian Forest expanded by 30%, and the Borneo Rainforest grown by 20%, which forest covers the most land?",
+        "answer": "Amazon Rainforest",
+        "branch": 4
+    },
+    {
+        "id": "61",
+        "question": "Considering the Atlantic Ocean with its area increased by 10%, the Pacific Ocean decreased by 5%, the Indian Ocean magnified by 20%, and the Arctic Ocean expanded by 15%, which ocean has the greatest area ?",
+        "answer": "Pacific Ocean",
+        "branch": 4
+    },
+    {
+        "id": "62",
+        "question": "In a scenario where Vietnam's population grows by 7%, Thailand's decreases by 8%, South Korea increases by 5%, and Japan's population reduces by 5%, which nation experiences the most significant population?",
+        "answer": "Japan",
+        "branch": 4
+    },
+    {
+        "id": "63",
+        "question": "Given the following adjustments to trench depths: the depth of the Mariana Trench increased by 10%, the depth of the South Sandwich Trench decreased by 20%, the Peru-Chile Trench depth remained unchanged, and the Sunda Trench depth decreased by 5%, what would be the average depth in meters of these four trenches after the adjustments?",
+        "answer": "8408.63",
+        "branch": 4
+    },
+    {
+        "id": "64",
+        "question": "If Mount Everest were 10% taller, Aconcagua were 15% shorter, Tokyo Skytree increased in height by 5%, and the CN Tower grew by 20%, how many times would we need to stack the shortest structure among them to reach the new height of the tallest structure?",
+        "answer": "14.65",
+        "branch": 4
+    },
+    {
+        "id": "65",
+        "question": "After the Sahara Desert's size is reduced by 15%, the Sonoran Desert's size increases by 25%, the Arabian Desert increases by 10%, and the Kalahari Desert's size shrinks by 10%, what would be the ratio between the largest and smallest desert?",
+        "answer": "24",
+        "branch": 4
+    },
+    {
+        "id": "66",
+        "question": "After a 15% increase in the length of the Yangtze River, a 10% decrease in the Mississippi River, a 5% boost in the Mekong River, and the Volga River shrinking by 12%, what is the combined length of the longest and shortest rivers in kilometers?",
+        "answer": "10352.28",
+        "branch": 4
+    },
+    {
+        "id": "67",
+        "question": "If Mount Everest shortens by 1%, Mount Kilimanjaro grows by 7%, Aconcagua decreases by 3%, and K2 extends by 2%, what is the ratio between the heights of the tallest and shortest mountains?",
+        "answer": "1.39",
+        "branch": 4
+    },
+    {
+        "id": "68",
+        "question": "If the height of the Christ the Redeemer statue decreased by 7%, the Statue of Unity increased by 6%, the Washington Monument increased by 5%, and the Motherland Calls statue decreased by 10%, what is the average of the shortest and tallest statues after these adjustments in meters?",
+        "answer": "113.07",
+        "branch": 4
+    },
+    {
+        "id": "69",
+        "question": "Given the height adjustments where the Ostankino Tower increases by 9%, the Burj Khalifa decreases by 6%, the Empire State Building increases by 3%, and the CN Tower decreases by 15%, what would be the average height of these structures after the adjustments in meters?",
+        "answer": "573.93",
+        "branch": 4
+    },
+    {
+        "id": "70",
+        "question": "The Amazon Rainforest loses 10% of its size due to deforestation, the Congo Forest enlarges by 20%, Borneo Rainforest reduces in size by 15%, and the Black Forest expands by 25%. What is the average size of these forests in km^2 after these changes?",
+        "answer": "1998363.5",
+        "branch": 4
+    },
+    {
+        "id": "71",
+        "question": "Upon the Pacific Ocean swelling by 15%, the Atlantic Ocean shrinking by 10%, the Arctic Ocean increasing by 20%, and the Indian Ocean expanding by 12%, what's the ratio of the size of the largest ocean to the smallest ocean?",
+        "answer": "11.23",
+        "branch": 4
+    },
+    {
+        "id": "72",
+        "question": "If Vietnam's population decreases by 5%, Thailand's increases by 9%, Japan's grows by 6%, and South Korea's reduces by 4%, what would be the total population of these four countries in millions?",
+        "answer": "353.72",
+        "branch": 4
+    },
+    {
+        "id": "73",
+        "question": "What is the maximum depth difference in meters between the Mariana Trench and the Puerto Rico Trench, the Puerto Rico Trench and the Sunda Trench, and the Sunda Trench and the South Sandwich Trench?",
+        "answer": "2608",
+        "branch": 4
+    },
+    {
+        "id": "74",
+        "question": "What is the largest depth ratio among the depth ratios of the Mariana Trench to the Sunda Trench, the Puerto Rico Trench to the Peru-Chile Trench, and the South Sandwich Trench to the Sunda Trench?",
+        "answer": "1.507",
+        "branch": 4
+    },
+    {
+        "id": "75",
+        "question": "What is the maximum value among the ratios of the area of the Sahara Desert to the Arabian Desert, the Arabian Desert to the Kalahari Desert, and the Kalahari Desert to the Sonoran Desert?",
+        "answer": "3.95",
+        "branch": 4
+    },
+    {
+        "id": "76",
+        "question": "Among the length ratios of the Yangtze River to the Mississippi River, the Mississippi River to the Volga River, and the Congo River to the Volga River, which value is the largest?",
+        "answer": "1.673",
+        "branch": 4
+    },
+    {
+        "id": "77",
+        "question": "Among the height differences in meters between Mount Everest and Mount Elbert, Mount Kilimanjaro and Mount Elbert, and K2 and Aconcagua, which value is the largest?",
+        "answer": "4447",
+        "branch": 4
+    },
+    {
+        "id": "78",
+        "question": "Which value is the smallest among the height ratios of the Motherland Calls statue to the Christ the Redeemer statue, the Washington Monument to the Ushiku Daibutsu, and the Statue of Unity to the Ushiku Daibutsu?",
+        "answer": "1.41",
+        "branch": 4
+    },
+    {
+        "id": "79",
+        "question": "Identify the smallest height difference in meters among these three pairs: the Empire State Building and the Ostankino Tower, the CN Tower and the Shanghai Tower, and the Tokyo Skytree and the Burj Khalifa.",
+        "answer": "78.7",
+        "branch": 4
+    },
+    {
+        "id": "80",
+        "question": "Out of the ratios of the Congo Rainforest's area to the Borneo Rainforest, the Borneo Rainforest's area to the Black Forest, and the Amazon Rainforest's area to the Congo Forest, which value is the greatest?",
+        "answer": "124.51",
+        "branch": 4
+    },
+    {
+        "id": "81",
+        "question": "Among the average sizes in square kilometers for the pairs of the Pacific Ocean and Southern Ocean, the Indian Ocean and Arctic Ocean, and the Atlantic Ocean and Southern Ocean, which value is the smallest?",
+        "answer": "42310000",
+        "branch": 4
+    },
+    {
+        "id": "82",
+        "question": "What is the largest ratio among the the population ratios of China to Thailand, Vietnam to South Korea, and Japan to Thailand?",
+        "answer": "20",
+        "branch": 4
+    },
+    {
+        "id": "83",
+        "question": "If Texas and Florida were to merge and become one state, as well as California and Michigan, what would be the largest population density among these 2 new states and New Jersey? Answer in people / square km.",
+        "answer": "488.19",
+        "branch": 4
+    },
+    {
+        "id": "84",
+        "question": "Given that the Peru-Chile Trench deepens by 10%, the Mariana Trench becomes 20% shallower, the South Sandwich Trench is reduced by 25%, the Puerto Rico Trench gets 30% deeper, and the Sunda Trench extends by 15%, which trench would have the least depth?",
+        "answer": "South Sandwich Trench",
+        "branch": 5
+    },
+    {
+        "id": "85",
+        "question": "Factoring in a cheetah that's 35% faster in maximum speed, a peregrine falcon that's 4.5 times slower in its maximum flight velocity, a greyhound that runs 15% faster than its maximum sprint, an ostrich that's 35% speedier than its maximum speed, and a gazelle with a 20% slower sprint, which animal is the speediest?",
+        "answer": "cheetah",
+        "branch": 5
+    },
+    {
+        "id": "86",
+        "question": "With the Sahara Desert's area reduce by a factor of 10, the Kalahari Desert's area magnified by 10%, the Atacama Desert's area expanded by 3.5 times, the Sonoran Desert's area doubled, and the Arabian Desert's area increased by 40%, which one covers more ground?",
+        "answer": "Arabian Desert",
+        "branch": 5
+    },
+    {
+        "id": "87",
+        "question": "Given the Yangtze River shortened by 15%, the Mississippi River extended by 20%, the Volga River increased by 30%, the Mekong River expanded by 25%, and the Conga River stretched by 10%, which river spans a greater length?",
+        "answer": "Mekong River",
+        "branch": 5
+    },
+    {
+        "id": "88",
+        "question": "If you reduce Mount Everest's height by 10%, increase Mount Kilimanjaro's height by 15%, add 30% to Aconcagua's height, decrease K2's height by 8%, and add 20% to Mount Elbert's height, which mountain would be the tallest?",
+        "answer": "Aconcagua",
+        "branch": 5
+    },
+    {
+        "id": "89",
+        "question": "After increasing the height of Christ the Redeemer by 2.5 times, decreasing the height of the Statue of Unity by 25%, decreasing the Washington Monument by 40%, shrinking the Motherland Calls statue by 20%, and extending the Ushiku Daibutsu by 15%, which statue would stand as the shortest in height?",
+        "answer": "Motherland Calls",
+        "branch": 5
+    },
+    {
+        "id": "90",
+        "question": "If the Empire State Building's height were increased by 50%, the Tokyo Skytree's height grew by 20%, the CN Tower's height expanded by 30%, the Ostankino Tower's height rose by 40%, and the Burj Khalifa's height was augmented by 25%, which tower would stand the tallest?",
+        "answer": "Burj Khalifa",
+        "branch": 5
+    },
+    {
+        "id": "91",
+        "question": "With the Amazon Rainforest expanded by 15%, the Congo Rainforest shrunk by 10%, the Australian Forest expanded by 30%, the Borneo Rainforest grown by 20%, and the Black Forest enlarged by 200 times, which forest would become the smallest?",
+        "answer": "Borneo Rainforest",
+        "branch": 5
+    },
+    {
+        "id": "92",
+        "question": "In a scenario where the Atlantic Ocean grows by 12%, the Pacific Ocean diminishes by 50%, the Indian Ocean grows by 18%, the Arctic Ocean grows by 10%, and the Southern Ocean grows by 15%, which ocean becomes the largest?",
+        "answer": "Atlantic Ocean",
+        "branch": 5
+    },
+    {
+        "id": "93",
+        "question": "Assuming Vietnam's population grows by 7%, Thailand's population grows by 6%, South Korea's population increases by 9%, Japan's decreases by 4%, and China's population grows by 1%, which country has the largest population?",
+        "answer": "China",
+        "branch": 5
+    },
+    {
+        "id": "94",
+        "question": "If the depth of every trench increased by the following percentages: Mariana Trench by 5%, Puerto Rico Trench by 10%, Sunda Trench by 15%, South Sandwich Trench by 20%, and Peru-Chile Trench by 25%, what would be the average depth of all the trenches after the changes in meters?",
+        "answer": "9810.79",
+        "branch": 5
+    },
+    {
+        "id": "95",
+        "question": "If Mount Everest were 12% taller, Aconcagua were reduced by 18%, Tokyo Skytree grew by 6%, the CN Tower increased by 22%, and the Empire State Building became 25% taller, how many times would we need to stack the shortest structure among them to match the new height of the tallest structure?",
+        "answer": "17.89",
+        "branch": 5
+    },
+    {
+        "id": "96",
+        "question": "Considering a 5% increase in the Sahara Desert, a 10% rise in the Sonoran Desert, a 15% drop in the Arabian Desert, a 20% boost in the Kalahari Desert, and the Atacama Desert doubling in size, what is the total combined size of all these deserts in square kilometers?",
+        "answer": "13216500",
+        "branch": 5
+    },
+    {
+        "id": "97",
+        "question": "With the Yangtze River shortening by 6%, the Mississippi River lengthening by 12%, the Mekong River being increased by 9%, the Volga River decreasing by 5%, and the Congo River expanding by 10%, what is the average length of all these rivers in kilometers?",
+        "answer": "4803",
+        "branch": 5
+    },
+    {
+        "id": "98",
+        "question": "After Mount Everest grows by 3%, Mount Kilimanjaro shrinks by 4%, Aconcagua increases by 6%, K2 decreases by 2%, and Mount Elbert is expanded by 8%, what is the average height of all these mountains in meters?",
+        "answer": "7069",
+        "branch": 5
+    },
+    {
+        "id": "99",
+        "question": "Given that the Christ the Redeemer statue decreased by 10%, the Statue of Unity increased by 4%, the Washington Monument decreased by 3%, the Motherland Calls statue increased by 7%, and the Ushiku Daibutsu decreased by 9%, what is the difference in height between the shortest and the tallest statues after the adjustments in meters?",
+        "answer": "153",
+        "branch": 5
+    },
+    {
+        "id": "100",
+        "question": "If the Tokyo Skytree's height increased by 4%, the Ostankino Tower's height decreased by 2%, the Shanghai Tower's height increased by 5%, the CN Tower's height increased by 7%, and the Empire State Building's height increased by 6%, what would be the average height of these five structures after the adjustments in meters?",
+        "answer": "582.82",
+        "branch": 5
+    },
+    {
+        "id": "101",
+        "question": "After a 10% reduction in the Amazon Rainforest, a 12% expansion in the Congo Rainforest, a 15% increase in the Australian Forest, a 5% shrinkage in the Borneo Rainforest, and a tripling of the Black Forest's size, what is the total area covered by all these forests combined in square kilometers?",
+        "answer": "9609286.60",
+        "branch": 5
+    },
+    {
+        "id": "102",
+        "question": "If the Atlantic Ocean's size grows by 14%, the Pacific Ocean's size decreases by 12%, the Indian Ocean's size expands by 11%, the Arctic Ocean enlarges by 13%, and the Southern Ocean reduces by 10%, what's the average size of these oceans in km^2 after the adjustments?",
+        "answer": "70995064",
+        "branch": 5
+    },
+    {
+        "id": "103",
+        "question": "South Korea's population grows by 10%, Vietnam's population grows by 8%, China's population decreases by 2%, Thailand's population grows by 7%, and Japan's population decreases by 3%. What would be the combined population of all five countries in millions?",
+        "answer": "1733.35",
+        "branch": 5
+    },
+    {
+        "id": "104",
+        "question": "What is the minimum depth difference in meters between the Mariana Trench and the Puerto Rico Trench, the Puerto Rico Trench and the Sunda Trench, the Sunda Trench and the South Sandwich Trench, and the South Sandwich Trench and the Peru-Chile Trench?",
+        "answer": "137",
+        "branch": 5
+    },
+    {
+        "id": "105",
+        "question": "Compute the largest ratio when comparing the depth of the Mariana Trench to the Puerto Rico Trench, the Peru-Chile Trench to the Sunda Trench, the Mariana Trench to the South Sandwich Trench, and the Puerto Rico Trench to the Sunda Trench.",
+        "answer": "1.339",
+        "branch": 5
+    },
+    {
+        "id": "106",
+        "question": "Determine the greatest ratio when comparing the areas of the Sahara Desert to the Arabian Desert, the Arabian Desert to the Kalahari Desert, the Kalahari Desert to the Sonoran Desert, and the Sonoran Desert to the Atacama Desert.",
+        "answer": "3.95",
+        "branch": 5
+    },
+    {
+        "id": "107",
+        "question": "Determine the smallest ratio when comparing the lengths of the Yangtze River to the Mekong River, the Mekong River to the Mississippi River, the Mississippi River to the Volga River, and the Congo River to the Volga River.",
+        "answer": "1.067",
+        "branch": 5
+    },
+    {
+        "id": "108",
+        "question": "What is the greatest height difference in meters when comparing Mount Everest with Mount Kilimanjaro, Aconcagua with Mount Elbert, K2 with Mount Elbert, and Mount Kilimanjaro with Aconcagua.",
+        "answer": "4210",
+        "branch": 5
+    },
+    {
+        "id": "109",
+        "question": "Determine the smallest ratio when comparing the height of the Statue of Unity to the Washington Monument, the Washington Monument to the Ushiku Faibutsu, the Ushiku Daibutsu to the Motherland Calls statue, and the Motherland Calls statue to the Christ the Redeemer statue.",
+        "answer": "1.07",
+        "branch": 5
+    },
+    {
+        "id": "110",
+        "question": "What is the maximum height difference in meters between the Burj Khalifa and the Empire State Building, the CN Tower and the Ostankino Tower, the Shanghai Tower and the Tokyo Skytree, and the Ostankino Tower and the Empire State Building?",
+        "answer": "386.8",
+        "branch": 5
+    },
+    {
+        "id": "111",
+        "question": "Identify the smallest ratio from the following comparisons: Amazon Rainforest to Congo Rainforest, Congo Rainforest to Australian Forest, Australian Forest to Borneo Rainforest, and Borneo Rainforest to Black Forest.",
+        "answer": "1.361",
+        "branch": 5
+    },
+    {
+        "id": "112",
+        "question": "Out of the average sizes in square kilometers for the following pairs: Pacific Ocean and Arctic Ocean, Indian Ocean and Southern Ocean, Atlantic Ocean and Indian Ocean, and Arctic Ocean and Southern Ocean, which value is the largest?",
+        "answer": "89655000",
+        "branch": 5
+    },
+    {
+        "id": "113",
+        "question": "Determine the smallest ratio when comparing the population of China to Japan, Thailand to South Korea, Vietnam to Thailand, and Japan to Vietnam.",
+        "answer": "1.25",
+        "branch": 5
+    }
+]
