@@ -42,14 +42,14 @@ pip install -r requirements.txt
 ## Basic Runs
 To reproduce the evaluation results in the paper, run the following command:
 ```
-python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-name} --store {store-path} [--logging] [--streaming]
+python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-name} --store {store-path} [--logging] [--stream]
 ```
 
 * `--api_key`: OpenAI API Key
 * `--benchmark`: Benchmark name. Use `hotpotqa`, `movie`, and `parallelqa` to evaluate LLMCompiler on the HotpotQA, Movie Recommendation, and ParallelQA benchmarks, respectively.
 * `--store`: Path to save the result. Question, true label, prediction, and latency per example will be stored in a JSON format.
 * `--logging`: (Optional) Enables logging.
-* `--streaming`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
+* `--stream`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
 
 After the run is over, you can get the summary of the results by running the following command:
 ```
