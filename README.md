@@ -21,6 +21,8 @@ Across a range of tasks that exhibit different patterns of parallel function cal
 consistently demonstrated **latency speedup, cost saving, and accuracy improvement**.
 For more details, please check out our [paper](https://arxiv.org/abs/2312.04511).
 
+## News
+* 🦙 [12/29] LLMCompiler is available on [LlamaIndex](https://llamahub.ai/l/llama_packs-agents-llm_compiler?from=llama_packs)
 
 ---
 ## Installation
