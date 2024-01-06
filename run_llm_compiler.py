@@ -24,17 +24,26 @@ from configs.parallelqa_react.gpt_prompts import PROMPT as PARALLELQA_REACT_PROM
 from configs.parallelqa_react.tools import (
     generate_tools as parallelqa_react_generate_tools,
 )
+from src.chains.llm_math_chain import LLMMathChain
 from src.llm_compiler.constants import END_OF_PLAN
 from src.llm_compiler.llm_compiler import LLMCompiler
 from src.react.base import initialize_react_agent_executor
 from src.utils.evaluation_utils import arun_and_time, compare_answer, normalize_answer
 from src.utils.logger_utils import enable_logging, flush_results
+from src.utils.model_utils import get_model
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--N", type=int, default=None, help="number of samples")
 argparser.add_argument("--react", action="store_true", help="Run ReAct")
 argparser.add_argument("--stream", action="store_true", help="stream plan")
 argparser.add_argument("--logging", action="store_true", help="logging")
+argparser.add_argument(
+    "--model_type",
+    type=str,
+    default="openai",
+    choices=["openai", "vllm"],
+    help="model type",
+)
 argparser.add_argument(
     "--model_name", type=str, default=None, help="model name to override default"
 )
@@ -46,7 +55,11 @@ argparser.add_argument(
     choices=["movie", "hotpotqa", "parallelqa"],
 )
 argparser.add_argument("--store", type=str, required=True, help="store path")
-argparser.add_argument("--api_key", type=str, required=True, help="openai api key")
+argparser.add_argument("--api_key", type=str, default=None, help="openai api key")
+
+# vllm-specific arguments
+argparser.add_argument("--vllm_port", type=int, default=None, help="vllm port")
+
 args = argparser.parse_args()
 
 
@@ -79,14 +92,20 @@ def get_tools(model_name, args):
         else:
             tools = hotpotqa_tools
     elif args.benchmark_name == "parallelqa":
+        llm_math_chain = get_model(
+            model_type=args.model_type,
+            model_name=model_name,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=False,
+            temperature=0,
+        )
+        llm_math_chain = LLMMathChain.from_llm(llm=llm_math_chain, verbose=True)
+
         if args.react:
-            tools = parallelqa_react_generate_tools(
-                model_name=model_name, api_key=args.api_key
-            )
+            tools = parallelqa_react_generate_tools(llm_math_chain)
         else:
-            tools = parallelqa_generate_tools(
-                model_name=model_name, api_key=args.api_key, callbacks=None
-            )
+            tools = parallelqa_generate_tools(llm_math_chain)
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
     return tools
@@ -134,9 +153,12 @@ async def main():
     if args.react:
         prompt = get_react_prompt(args)
         print("Run React")
-        llm = ChatOpenAI(
+        llm = get_model(
+            model_type=args.model_type,
             model_name=model_name,
-            openai_api_key=args.api_key,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=False,
             temperature=0,
         )
         agent = initialize_react_agent_executor(
@@ -148,18 +170,22 @@ async def main():
 
     else:
         print("Run Octopus")
-        llm = ChatOpenAI(
+        # can be streaming or not
+        llm = get_model(
+            model_type=args.model_type,
             model_name=model_name,
-            openai_api_key=args.api_key,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=False,
             temperature=0,
         )
-
-        # can be streaming or not
-        planner_llm = ChatOpenAI(
+        planner_llm = get_model(
+            model_type=args.model_type,
             model_name=model_name,
-            openai_api_key=args.api_key,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=args.stream,
             temperature=0,
-            streaming=args.stream,
         )
 
         agent = LLMCompiler(
