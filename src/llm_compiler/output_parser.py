@@ -2,11 +2,11 @@ import ast
 import re
 from typing import Any, Sequence, Union
 
-from src.llm_compiler.task_fetching_unit import Task
-from src.tools.base import StructuredTool, Tool
-
 from langchain.agents.agent import AgentOutputParser
 from langchain.schema import OutputParserException
+
+from src.llm_compiler.task_fetching_unit import Task
+from src.tools.base import StructuredTool, Tool
 
 THOUGHT_PATTERN = r"Thought: ([^\n]*)"
 ACTION_PATTERN = r"\n*(\d+)\. (\w+)\((.*)\)(\s*#\w+\n)?"

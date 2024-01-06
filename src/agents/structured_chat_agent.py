@@ -1,9 +1,6 @@
 import re
 from typing import Any, List, Optional, Sequence, Tuple
 
-from src.agents.agent import Agent
-from src.chains.llm_chain import LLMChain
-
 from langchain.agents.agent import AgentOutputParser
 from langchain.agents.structured_chat.output_parser import (
     StructuredChatOutputParserWithRetries,
@@ -19,6 +16,9 @@ from langchain.pydantic_v1 import Field
 from langchain.schema import AgentAction, BasePromptTemplate
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.tools import BaseTool
+
+from src.agents.agent import Agent
+from src.chains.llm_chain import LLMChain
 
 HUMAN_MESSAGE_TEMPLATE = "{input}\n\n{agent_scratchpad}"
 

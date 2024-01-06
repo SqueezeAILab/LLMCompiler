@@ -1,8 +1,8 @@
+from langchain.chat_models import ChatOpenAI
+
 from src.agents.tools import Tool
 from src.chains.llm_math_chain import LLMMathChain
 from src.docstore.wikipedia import DocstoreExplorer, ReActWikipedia
-
-from langchain.chat_models import ChatOpenAI
 
 _MATH_DESCRIPTION = (
     "math(problem: str, context: Optional[list[str]]) -> float:\n"

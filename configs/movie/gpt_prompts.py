@@ -30,7 +30,6 @@ OUTPUT_PROMPT = (
     "Answer should be short and a single item and MUST not be multiple choices.\n"
     "\nGuidelines:\n"
     f"  - You MUST always output with {JOINNER_FINISH}(answer) even if you are not sure about the answer.\n"
-    "   - You MUST Find all movies to make the most informed decision.\n"
     "   - The Observation for some movies may not be available or not relevant to movie information. "
     "If this happens, just ignore it and rely on your own knowledge on that movie.\n"
     "   - When making the final answer, you MUST use both your own knowledge and the information you found. "

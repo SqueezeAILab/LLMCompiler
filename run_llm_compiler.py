@@ -5,21 +5,34 @@ import os
 import shutil
 
 import numpy as np
+from langchain.chat_models import ChatOpenAI
+
 from configs.hotpotqa.configs import CONFIGS as HOTPOTQA_CONFIGS
 from configs.hotpotqa.tools import tools as hotpotqa_tools
+from configs.hotpotqa_react.configs import CONFIGS as HOTPOTQA_REACT_CONFIGS
+from configs.hotpotqa_react.gpt_prompts import PROMPT as HOTPOTQA_REACT_PROMPT
+from configs.hotpotqa_react.tools import tools as hotpotqa_react_tools
 from configs.movie.configs import CONFIGS as MOVIE_CONFIGS
 from configs.movie.tools import tools as movie_tools
+from configs.movie_react.configs import CONFIGS as MOVIE_REACT_CONFIGS
+from configs.movie_react.gpt_prompts import PROMPT as MOVIE_REACT_PROMPT
+from configs.movie_react.tools import tools as movie_react_tools
 from configs.parallelqa.configs import CONFIGS as PARALLELQA_CONFIGS
-from configs.parallelqa.tools import generate_tools
+from configs.parallelqa.tools import generate_tools as parallelqa_generate_tools
+from configs.parallelqa_react.configs import CONFIGS as PARALLELQA_REACT_CONFIGS
+from configs.parallelqa_react.gpt_prompts import PROMPT as PARALLELQA_REACT_PROMPT
+from configs.parallelqa_react.tools import (
+    generate_tools as parallelqa_react_generate_tools,
+)
 from src.llm_compiler.constants import END_OF_PLAN
 from src.llm_compiler.llm_compiler import LLMCompiler
+from src.react.base import initialize_react_agent_executor
 from src.utils.evaluation_utils import arun_and_time, compare_answer, normalize_answer
 from src.utils.logger_utils import enable_logging, flush_results
 
-from langchain.chat_models import ChatOpenAI
-
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--N", type=int, default=None, help="number of samples")
+argparser.add_argument("--react", action="store_true", help="Run ReAct")
 argparser.add_argument("--stream", action="store_true", help="stream plan")
 argparser.add_argument("--logging", action="store_true", help="logging")
 argparser.add_argument(
@@ -56,13 +69,24 @@ def get_dataset(args):
 
 def get_tools(model_name, args):
     if args.benchmark_name == "movie":
-        tools = movie_tools
+        if args.react:
+            tools = movie_react_tools
+        else:
+            tools = movie_tools
     elif args.benchmark_name == "hotpotqa":
-        tools = hotpotqa_tools
+        if args.react:
+            tools = hotpotqa_react_tools
+        else:
+            tools = hotpotqa_tools
     elif args.benchmark_name == "parallelqa":
-        tools = generate_tools(
-            model_name=model_name, api_key=args.api_key, callbacks=None
-        )
+        if args.react:
+            tools = parallelqa_react_generate_tools(
+                model_name=model_name, api_key=args.api_key
+            )
+        else:
+            tools = parallelqa_generate_tools(
+                model_name=model_name, api_key=args.api_key, callbacks=None
+            )
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
     return tools
@@ -70,14 +94,35 @@ def get_tools(model_name, args):
 
 def get_configs(args):
     if args.benchmark_name == "movie":
-        configs = MOVIE_CONFIGS
+        if args.react:
+            configs = MOVIE_CONFIGS
+        else:
+            configs = MOVIE_REACT_CONFIGS
     elif args.benchmark_name == "hotpotqa":
-        configs = HOTPOTQA_CONFIGS
+        if args.react:
+            configs = HOTPOTQA_CONFIGS
+        else:
+            configs = HOTPOTQA_REACT_CONFIGS
     elif args.benchmark_name == "parallelqa":
-        configs = PARALLELQA_CONFIGS
+        if args.react:
+            configs = PARALLELQA_REACT_CONFIGS
+        else:
+            configs = PARALLELQA_CONFIGS
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
     return configs
+
+
+def get_react_prompt(args):
+    if args.benchmark_name == "movie":
+        prompt = MOVIE_REACT_PROMPT
+    elif args.benchmark_name == "hotpotqa":
+        prompt = HOTPOTQA_REACT_PROMPT
+    elif args.benchmark_name == "parallelqa":
+        prompt = PARALLELQA_REACT_PROMPT
+    else:
+        raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
+    return prompt
 
 
 async def main():
@@ -86,33 +131,50 @@ async def main():
     dataset = get_dataset(args)
     tools = get_tools(model_name, args)
 
-    llm = ChatOpenAI(
-        model_name=model_name,
-        openai_api_key=args.api_key,
-        temperature=0,
-    )
+    if args.react:
+        prompt = get_react_prompt(args)
+        print("Run React")
+        llm = ChatOpenAI(
+            model_name=model_name,
+            openai_api_key=args.api_key,
+            temperature=0,
+        )
+        agent = initialize_react_agent_executor(
+            llm=llm,
+            tools=tools,
+            prompt=prompt,
+            verbose=True,
+        )
 
-    # can be streaming or not
-    planner_llm = ChatOpenAI(
-        model_name=model_name,
-        openai_api_key=args.api_key,
-        temperature=0,
-        streaming=args.stream,
-    )
+    else:
+        print("Run Octopus")
+        llm = ChatOpenAI(
+            model_name=model_name,
+            openai_api_key=args.api_key,
+            temperature=0,
+        )
 
-    octopus_agent = LLMCompiler(
-        tools=tools,
-        planner_llm=planner_llm,
-        planner_example_prompt=configs["planner_prompt"],
-        planner_example_prompt_replan=configs.get("planner_prompt_replan"),
-        planner_stop=[END_OF_PLAN],
-        planner_stream=args.stream,
-        agent_llm=llm,
-        joinner_prompt=configs["output_prompt"],
-        joinner_prompt_final=configs.get("output_prompt_final"),
-        max_replans=configs["max_replans"],
-        benchmark=False,
-    )
+        # can be streaming or not
+        planner_llm = ChatOpenAI(
+            model_name=model_name,
+            openai_api_key=args.api_key,
+            temperature=0,
+            streaming=args.stream,
+        )
+
+        agent = LLMCompiler(
+            tools=tools,
+            planner_llm=planner_llm,
+            planner_example_prompt=configs["planner_prompt"],
+            planner_example_prompt_replan=configs.get("planner_prompt_replan"),
+            planner_stop=[END_OF_PLAN],
+            planner_stream=args.stream,
+            agent_llm=llm,
+            joinner_prompt=configs["output_prompt"],
+            joinner_prompt_final=configs.get("output_prompt_final"),
+            max_replans=configs["max_replans"],
+            benchmark=False,
+        )
 
     all_results = {}
     if os.path.exists(args.store):
@@ -127,9 +189,7 @@ async def main():
         label = normalize_answer(_label)
 
         if str(id) not in all_results:
-            octopus_answer, octopus_time = await arun_and_time(
-                octopus_agent.arun, question
-            )
+            octopus_answer, octopus_time = await arun_and_time(agent.arun, question)
             normalized_octopus_answer = normalize_answer(octopus_answer)
             print(f"Answer: {octopus_answer}")
             print(normalized_octopus_answer, "<>", label)
