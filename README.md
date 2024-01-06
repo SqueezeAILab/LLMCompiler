@@ -52,6 +52,7 @@ python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-nam
 * `--store`: Path to save the result. Question, true label, prediction, and latency per example will be stored in a JSON format.
 * `--logging`: (Optional) Enables logging.
 * `--stream`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
+* `--react`: (Optional) Use ReAct instead of LLMCompiler for baseline evaluation.
 
 After the run is over, you can get the summary of the results by running the following command:
 ```
@@ -72,7 +73,6 @@ Please refer to `configs/hotpotqa`, `configs/movie`, and `configs/parallelqa` as
 ## Roadmap
 We are planning to update the following features soon:
 * Support for open-source models (e.g. LLaMA-2)
-* Baseline methods we used in the paper
 * Tree-of-Thoughts evaluation we used in the paper
 
 ---
