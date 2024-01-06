@@ -6,7 +6,6 @@ from typing import List, Optional, Union
 import aiohttp
 import requests
 from bs4 import BeautifulSoup
-
 from langchain.docstore.base import Docstore
 from langchain.docstore.document import Document
 

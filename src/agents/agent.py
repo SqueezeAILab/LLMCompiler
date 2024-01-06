@@ -7,8 +7,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 import yaml
-from src.chains.llm_chain import LLMChain
-
 from langchain.agents.agent import AgentOutputParser, BaseSingleActionAgent
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks.base import BaseCallbackManager
@@ -25,6 +23,8 @@ from langchain.schema import (
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.schema.messages import BaseMessage
 from langchain.tools import BaseTool
+
+from src.chains.llm_chain import LLMChain
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +118,9 @@ class Agent(BaseSingleActionAgent):
             full_output = self.llm_chain.predict(callbacks=callbacks, **full_inputs)
             return self.output_parser.parse(full_output)
         except Exception as e:
-            full_inputs['agent_scratchpad'] = full_inputs['agent_scratchpad'] + full_output + "\nAction: "
+            full_inputs["agent_scratchpad"] = (
+                full_inputs["agent_scratchpad"] + full_output + "\nAction: "
+            )
             full_output = self.llm_chain.predict(callbacks=callbacks, **full_inputs)
             return self.output_parser.parse("Action: " + full_output)
 
@@ -139,9 +141,21 @@ class Agent(BaseSingleActionAgent):
         Returns:
             Action specifying what tool to use.
         """
-        full_inputs = self.get_full_inputs(intermediate_steps, **kwargs)
-        full_output = await self.llm_chain.apredict(callbacks=callbacks, **full_inputs)
-        agent_output = await self.output_parser.aparse(full_output)
+        try:
+            full_inputs = self.get_full_inputs(intermediate_steps, **kwargs)
+            full_output = await self.llm_chain.apredict(
+                callbacks=callbacks, **full_inputs
+            )
+            agent_output = await self.output_parser.aparse(full_output)
+        except Exception as e:
+            full_inputs["agent_scratchpad"] = (
+                full_inputs["agent_scratchpad"] + full_output + "\nAction: "
+            )
+            full_output = await self.llm_chain.apredict(
+                callbacks=callbacks, **full_inputs
+            )
+            agent_output = await self.output_parser.aparse("Action: " + full_output)
+
         return agent_output
 
     def get_full_inputs(
@@ -190,11 +204,6 @@ class Agent(BaseSingleActionAgent):
         """Prefix to append the LLM call with."""
 
     @classmethod
-    @abstractmethod
-    def create_prompt(cls, tools: Sequence[BaseTool]) -> BasePromptTemplate:
-        """Create a prompt for this class."""
-
-    @classmethod
     def _validate_tools(cls, tools: Sequence[BaseTool]) -> None:
         """Validate that appropriate tools are passed in."""
         pass
@@ -209,6 +218,7 @@ class Agent(BaseSingleActionAgent):
         cls,
         llm: BaseLanguageModel,
         tools: Sequence[BaseTool],
+        prompt: BasePromptTemplate,
         callback_manager: Optional[BaseCallbackManager] = None,
         output_parser: Optional[AgentOutputParser] = None,
         **kwargs: Any,
@@ -217,7 +227,7 @@ class Agent(BaseSingleActionAgent):
         cls._validate_tools(tools)
         llm_chain = LLMChain(
             llm=llm,
-            prompt=cls.create_prompt(tools),
+            prompt=prompt,
             callback_manager=callback_manager,
         )
         tool_names = [tool.name for tool in tools]

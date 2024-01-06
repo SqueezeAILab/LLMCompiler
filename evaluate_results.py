@@ -2,6 +2,7 @@ import argparse
 import json
 
 import numpy as np
+
 from src.utils.evaluation_utils import compare_answer
 
 argparser = argparse.ArgumentParser()
@@ -25,6 +26,8 @@ with open(file, "r") as f:
 is_corrects = []
 all_times = []
 for i, (idx, x) in enumerate(results.items()):
+    if args.k is not None and i >= args.k:
+        break
     is_correct = compare_answer(x["answer"], x["label"])
     if args.detail and not is_correct:
         print(i, x["answer"], "<>", x["label"])
@@ -32,9 +35,10 @@ for i, (idx, x) in enumerate(results.items()):
     all_times.append(x["time"])
 
 num_correct = sum(is_corrects)
+N = len(results) if args.k is None else args.k
 
 print(f"Results")
-print(f"Raw: {num_correct} / {len(results)} = {num_correct / len(results)}")
+print(f"Raw: {num_correct} / {N} = {num_correct / N}")
 
 # compute mean and std of times
 print(f"Mean time: {np.mean(all_times)}")
@@ -43,7 +47,9 @@ print(f"Std time: {np.std(all_times)}")
 input_tokens = 0
 output_tokens = 0
 total_examples = 0
-for id, example in results.items():
+for i, (id, example) in enumerate(results.items()):
+    if args.k is not None and i >= args.k:
+        break
     if "stats" not in example:
         break
     total_examples += 1

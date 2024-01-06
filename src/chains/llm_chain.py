@@ -5,8 +5,6 @@ import logging
 import warnings
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
-from src.chains.chain import Chain
-
 from langchain.callbacks.base import BaseCallbackManager
 from langchain.callbacks.manager import (
     AsyncCallbackManager,
@@ -28,6 +26,8 @@ from langchain.schema import (
 )
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.utils.input import get_colored_text
+
+from src.chains.chain import Chain
 
 logger = logging.getLogger(__name__)
 

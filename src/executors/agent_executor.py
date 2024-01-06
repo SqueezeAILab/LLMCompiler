@@ -7,10 +7,6 @@ import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from src.chains.chain import Chain
-from src.tools.base import BaseTool
-from src.utils.logger_utils import log
-
 from langchain.agents.agent import BaseMultiActionAgent, BaseSingleActionAgent
 from langchain.agents.agent_iterator import AgentExecutorIterator
 from langchain.agents.tools import InvalidTool
@@ -23,10 +19,13 @@ from langchain.callbacks.manager import (
 )
 from langchain.pydantic_v1 import root_validator
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
-from langchain.schema.language_model import BaseLanguageModel
 from langchain.tools import BaseTool
 from langchain.utilities.asyncio import asyncio_timeout
 from langchain.utils.input import get_color_mapping
+
+from src.chains.chain import Chain
+from src.tools.base import BaseTool
+from src.utils.logger_utils import log
 
 logger = logging.getLogger(__name__)
 
@@ -572,26 +571,3 @@ s
             return self.trim_intermediate_steps(intermediate_steps)
         else:
             return intermediate_steps
-
-
-def initialize_agent_executor(
-    agent_cls: BaseSingleActionAgent,
-    llm: BaseLanguageModel,
-    tools: Sequence[BaseTool],
-    verbose: bool = False,
-    agent_kwargs: Dict[str, Any] = {},
-):
-    """Load an agent executor given tools and LLM.
-    Simplified version of langchain.agents.initialize.initialize_agent
-    """
-
-    agent = agent_cls.from_llm_and_tools(
-        llm,
-        tools,
-        human_message_template=agent_kwargs.get("human_message_template", None),
-        input_variables=agent_kwargs.get("input_variables", None),
-    )
-    agent_executor = AgentExecutor.from_agent_and_tools(
-        agent=agent, tools=tools, verbose=verbose
-    )
-    return agent_executor

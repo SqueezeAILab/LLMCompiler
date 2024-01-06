@@ -8,9 +8,6 @@ import warnings
 from typing import Any, Dict, List, Optional
 
 import numexpr
-from src.chains.chain import Chain
-from src.chains.llm_chain import LLMChain
-
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForChainRun,
     CallbackManagerForChainRun,
@@ -21,6 +18,9 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain.pydantic_v1 import Extra, root_validator
 from langchain.schema import BasePromptTemplate
 from langchain.schema.language_model import BaseLanguageModel
+
+from src.chains.chain import Chain
+from src.chains.llm_chain import LLMChain
 
 _PROMPT_TEMPLATE = """Translate a math problem into a expression that can be executed using Python's numexpr library. Use the output of running this code to answer the question.
 You MUST follow the following guidelines:
