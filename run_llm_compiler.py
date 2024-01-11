@@ -114,14 +114,14 @@ def get_tools(model_name, args):
 def get_configs(args):
     if args.benchmark_name == "movie":
         if args.react:
-            configs = MOVIE_CONFIGS
-        else:
             configs = MOVIE_REACT_CONFIGS
+        else:
+            configs = MOVIE_CONFIGS
     elif args.benchmark_name == "hotpotqa":
         if args.react:
-            configs = HOTPOTQA_CONFIGS
-        else:
             configs = HOTPOTQA_REACT_CONFIGS
+        else:
+            configs = HOTPOTQA_CONFIGS
     elif args.benchmark_name == "parallelqa":
         if args.react:
             configs = PARALLELQA_REACT_CONFIGS
