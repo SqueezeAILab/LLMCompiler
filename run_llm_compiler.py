@@ -132,18 +132,6 @@ def get_configs(args):
     return configs
 
 
-def get_react_prompt(args):
-    if args.benchmark_name == "movie":
-        prompt = MOVIE_REACT_PROMPT
-    elif args.benchmark_name == "hotpotqa":
-        prompt = HOTPOTQA_REACT_PROMPT
-    elif args.benchmark_name == "parallelqa":
-        prompt = PARALLELQA_REACT_PROMPT
-    else:
-        raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
-    return prompt
-
-
 async def main():
     configs = get_configs(args)
     model_name = args.model_name or configs["default_model"]
@@ -151,7 +139,8 @@ async def main():
     tools = get_tools(model_name, args)
 
     if args.react:
-        prompt = get_react_prompt(args)
+        assert "prompt" in configs, "React config requires a prompt"
+        prompt = configs["prompt"]
         print("Run React")
         llm = get_model(
             model_type=args.model_type,
