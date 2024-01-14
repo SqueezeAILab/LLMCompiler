@@ -10,17 +10,14 @@ from langchain.chat_models import ChatOpenAI
 from configs.hotpotqa.configs import CONFIGS as HOTPOTQA_CONFIGS
 from configs.hotpotqa.tools import tools as hotpotqa_tools
 from configs.hotpotqa_react.configs import CONFIGS as HOTPOTQA_REACT_CONFIGS
-from configs.hotpotqa_react.gpt_prompts import PROMPT as HOTPOTQA_REACT_PROMPT
 from configs.hotpotqa_react.tools import tools as hotpotqa_react_tools
 from configs.movie.configs import CONFIGS as MOVIE_CONFIGS
 from configs.movie.tools import tools as movie_tools
 from configs.movie_react.configs import CONFIGS as MOVIE_REACT_CONFIGS
-from configs.movie_react.gpt_prompts import PROMPT as MOVIE_REACT_PROMPT
 from configs.movie_react.tools import tools as movie_react_tools
 from configs.parallelqa.configs import CONFIGS as PARALLELQA_CONFIGS
 from configs.parallelqa.tools import generate_tools as parallelqa_generate_tools
 from configs.parallelqa_react.configs import CONFIGS as PARALLELQA_REACT_CONFIGS
-from configs.parallelqa_react.gpt_prompts import PROMPT as PARALLELQA_REACT_PROMPT
 from configs.parallelqa_react.tools import (
     generate_tools as parallelqa_react_generate_tools,
 )
