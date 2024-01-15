@@ -5,7 +5,6 @@ import os
 import shutil
 
 import numpy as np
-from langchain.chat_models import ChatOpenAI
 
 from configs.hotpotqa.configs import CONFIGS as HOTPOTQA_CONFIGS
 from configs.hotpotqa.tools import tools as hotpotqa_tools
@@ -137,7 +136,7 @@ async def main():
 
     if args.react:
         assert "prompt" in configs, "React config requires a prompt"
-        prompt = configs["prompt"]
+        prompt = configs["prompt"][args.model_type]
         print("Run React")
         llm = get_model(
             model_type=args.model_type,
