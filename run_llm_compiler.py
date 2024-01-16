@@ -11,9 +11,9 @@ from configs.hotpotqa.tools import tools as hotpotqa_tools
 from configs.hotpotqa_react.configs import CONFIGS as HOTPOTQA_REACT_CONFIGS
 from configs.hotpotqa_react.tools import tools as hotpotqa_react_tools
 from configs.movie.configs import CONFIGS as MOVIE_CONFIGS
-from configs.movie.tools import tools as movie_tools
+from configs.movie.tools import generate_tools as movie_generate_tools
 from configs.movie_react.configs import CONFIGS as MOVIE_REACT_CONFIGS
-from configs.movie_react.tools import tools as movie_react_tools
+from configs.movie_react.tools import generate_tools as movie_react_generate_tools
 from configs.parallelqa.configs import CONFIGS as PARALLELQA_CONFIGS
 from configs.parallelqa.tools import generate_tools as parallelqa_generate_tools
 from configs.parallelqa_react.configs import CONFIGS as PARALLELQA_REACT_CONFIGS
@@ -79,29 +79,19 @@ def get_dataset(args):
 def get_tools(model_name, args):
     if args.benchmark_name == "movie":
         if args.react:
-            tools = movie_react_tools
+            tools = movie_react_generate_tools(args)
         else:
-            tools = movie_tools
+            tools = movie_generate_tools(args)
     elif args.benchmark_name == "hotpotqa":
         if args.react:
             tools = hotpotqa_react_tools
         else:
             tools = hotpotqa_tools
     elif args.benchmark_name == "parallelqa":
-        llm_math_chain = get_model(
-            model_type=args.model_type,
-            model_name=model_name,
-            api_key=args.api_key,
-            vllm_port=args.vllm_port,
-            stream=False,
-            temperature=0,
-        )
-        llm_math_chain = LLMMathChain.from_llm(llm=llm_math_chain, verbose=True)
-
         if args.react:
-            tools = parallelqa_react_generate_tools(llm_math_chain)
+            tools = parallelqa_react_generate_tools(args, model_name)
         else:
-            tools = parallelqa_generate_tools(llm_math_chain)
+            tools = parallelqa_generate_tools(args, model_name)
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
     return tools

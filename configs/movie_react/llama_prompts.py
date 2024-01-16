@@ -8,9 +8,8 @@ _PREFIX = (
     " Never provide answers with explanations or descriptions. answer MUST always be a movie title, nothing else. Answer should never be 'None' or 'I don't know'.\n"
     "Guidelines:\n"
     "- You MUST always output with Finish[answer] even if you are not sure about the answer.\n"
-    "- You MUST search for information about all movies even if the first 4 are dissimilar.\n"
-    "- You MUST find all movies to make the most informed decision including the movies in the options.\n"
-    "- You MUST NEVER find the same movies twice. Even when the search results are not relevant or informative, never search it again or retry with other options.\n"
+    # comment the following sentence for the unoptimized react
+    "- You MUST find all movies and NEVER find the same movies twice.\n"
     "- The Search result may not be available (in case search failed) or not relevant to movie information. If this happens, just ignore it and rely on your own knowledge on that movie.\n"
     "- When you provide the final answer, you MUST use the format Finish[answer], and must NEVER use any other format. answer MUST be a movie title, nothing else. "
     "NEVER provide any other explanation or description. If you don't follow this format, you will be PANALIZED.\n"

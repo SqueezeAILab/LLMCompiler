@@ -7,16 +7,20 @@ _PREFIX = (
     " - There are cases where the Observations are unclear or irrelevant (in the case wikipedia search was not successful). "
     "In such a case where the Observations are unclear, you must make a best guess based on your own knowledge if you don't know the answer. "
     "You MUST NEVER say in your thought that you don't know the answer.\n"
-    " - NEVER search the same entities twice. Otherwise, you will be PANALIZED. If the information is not available, use your own knowledge.\n"
+    # comment this for unoptimized react
+    " - NEVER search the same entities twice. Otherwise, you will be PANALIZED. "
+    "If the information is not available, use your own knowledge.\n"
     "\n"
     " - After Thought, you MUST always take an Action. Action can be two types:\n"
     "(1) Search[entity], which searches the exact entity on Wikipedia and returns the first paragraph if it exists. "
+    # comment this for unoptimized react
     "You MUST find all entities to make the most informed decision. Never search the same entity more than once.\n"
     " - Answer should be short and a single item and MUST not be multiple choices. "
     "Answer MUST NEVER be 'unclear', 'unknown', 'neither', 'unrelated' or 'undetermined', and otherwise you will be PENALIZED.\n"
+    # comment this for unoptimized react
     " - You MUST NEVER search two entities more than once. Even if the search result is irrelavant or unavilable, you MUST NOT search it again or you will be PANALIZED. "
+    # comment this for unoptimized react
     "Just say you will use your own knowledge and move on to produce the final answer.\n"
-    # " - You can only use search twice."
     "(2) Finish[answer], which returns the answer and finishes the task. After this action, you MUST output <END_OF_RESPONSE> to finish the task.\n"
     "Here are some examples."
 )
