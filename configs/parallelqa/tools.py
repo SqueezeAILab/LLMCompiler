@@ -1,8 +1,7 @@
-from langchain.chat_models import ChatOpenAI
-
 from src.agents.tools import Tool
 from src.chains.llm_math_chain import LLMMathChain
 from src.docstore.wikipedia import DocstoreExplorer, ReActWikipedia
+from src.utils.model_utils import get_model
 
 _MATH_DESCRIPTION = (
     "math(problem: str, context: Optional[list[str]]) -> float:\n"
@@ -42,7 +41,7 @@ def run_llm_math_chain_factory(llm_math_chain):
                 context_str = "\n\n".join(context_strs)
             prompt = (
                 "Answer the Question based on the Context. When you write down a expression, it MUST ONLY consists of numbers and operators. "
-                "Here are some guidelines:\n\n"
+                "Here are some guidelines that you will be PANALIZED if you don't follow:\n\n"
                 "  - When you are asked for differences, you consider the absolute value of the difference. Difference of two numbers is always positive."
                 "For instance, the difference between 1 and 2 is 1, not -1.\n"
                 "  - When you are applying operations (e.g. difference, summation, ratio, etc.) between multiple values in the Context, you must unify the units of those numbers. "
@@ -56,7 +55,7 @@ def run_llm_math_chain_factory(llm_math_chain):
                 "you must convert the distance to kilometers.\n"
                 "  - If you are asked about a particular number in millions, billions, or any other unit, the number should be written without specifying the unit. "
                 "For example, if you are asked for 100 millions, it should be written as 100, not 100 million or 100,000,000.\n"
-                '  - Never introduce a variable. For instance "gazelle_max_speed * 1.4" is not allowed. Pick up a correct number from the given context.\n'
+                ' - Never introduce a variable. For instance "gazelle_max_speed * 1.4" is not allowed. Pick up a correct number from the given context.\n'
                 "\n"
                 f"{context_str}\n\n"
                 f"Question: {question}\n\n"
@@ -79,14 +78,15 @@ web_searcher = ReActWikipedia()
 docstore = DocstoreExplorer(web_searcher)
 
 
-def generate_tools(model_name, api_key, callbacks):
-    llm_math_chain = ChatOpenAI(
+def generate_tools(args, model_name):
+    llm_math_chain = get_model(
+        model_type=args.model_type,
         model_name=model_name,
-        openai_api_key=api_key,
+        api_key=args.api_key,
+        vllm_port=args.vllm_port,
+        stream=False,
         temperature=0,
-        callbacks=callbacks,
     )
-
     llm_math_chain = LLMMathChain.from_llm(llm=llm_math_chain, verbose=True)
     return [
         Tool(

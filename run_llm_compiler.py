@@ -5,36 +5,41 @@ import os
 import shutil
 
 import numpy as np
-from langchain.chat_models import ChatOpenAI
 
 from configs.hotpotqa.configs import CONFIGS as HOTPOTQA_CONFIGS
 from configs.hotpotqa.tools import tools as hotpotqa_tools
 from configs.hotpotqa_react.configs import CONFIGS as HOTPOTQA_REACT_CONFIGS
-from configs.hotpotqa_react.gpt_prompts import PROMPT as HOTPOTQA_REACT_PROMPT
 from configs.hotpotqa_react.tools import tools as hotpotqa_react_tools
 from configs.movie.configs import CONFIGS as MOVIE_CONFIGS
-from configs.movie.tools import tools as movie_tools
+from configs.movie.tools import generate_tools as movie_generate_tools
 from configs.movie_react.configs import CONFIGS as MOVIE_REACT_CONFIGS
-from configs.movie_react.gpt_prompts import PROMPT as MOVIE_REACT_PROMPT
-from configs.movie_react.tools import tools as movie_react_tools
+from configs.movie_react.tools import generate_tools as movie_react_generate_tools
 from configs.parallelqa.configs import CONFIGS as PARALLELQA_CONFIGS
 from configs.parallelqa.tools import generate_tools as parallelqa_generate_tools
 from configs.parallelqa_react.configs import CONFIGS as PARALLELQA_REACT_CONFIGS
-from configs.parallelqa_react.gpt_prompts import PROMPT as PARALLELQA_REACT_PROMPT
 from configs.parallelqa_react.tools import (
     generate_tools as parallelqa_react_generate_tools,
 )
+from src.chains.llm_math_chain import LLMMathChain
 from src.llm_compiler.constants import END_OF_PLAN
 from src.llm_compiler.llm_compiler import LLMCompiler
 from src.react.base import initialize_react_agent_executor
 from src.utils.evaluation_utils import arun_and_time, compare_answer, normalize_answer
 from src.utils.logger_utils import enable_logging, flush_results
+from src.utils.model_utils import get_model
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--N", type=int, default=None, help="number of samples")
 argparser.add_argument("--react", action="store_true", help="Run ReAct")
 argparser.add_argument("--stream", action="store_true", help="stream plan")
 argparser.add_argument("--logging", action="store_true", help="logging")
+argparser.add_argument(
+    "--model_type",
+    type=str,
+    default="openai",
+    choices=["openai", "vllm"],
+    help="model type",
+)
 argparser.add_argument(
     "--model_name", type=str, default=None, help="model name to override default"
 )
@@ -46,7 +51,11 @@ argparser.add_argument(
     choices=["movie", "hotpotqa", "parallelqa"],
 )
 argparser.add_argument("--store", type=str, required=True, help="store path")
-argparser.add_argument("--api_key", type=str, required=True, help="openai api key")
+argparser.add_argument("--api_key", type=str, default=None, help="openai api key")
+
+# vllm-specific arguments
+argparser.add_argument("--vllm_port", type=int, default=None, help="vllm port")
+
 args = argparser.parse_args()
 
 
@@ -70,9 +79,9 @@ def get_dataset(args):
 def get_tools(model_name, args):
     if args.benchmark_name == "movie":
         if args.react:
-            tools = movie_react_tools
+            tools = movie_react_generate_tools(args)
         else:
-            tools = movie_tools
+            tools = movie_generate_tools(args)
     elif args.benchmark_name == "hotpotqa":
         if args.react:
             tools = hotpotqa_react_tools
@@ -80,13 +89,9 @@ def get_tools(model_name, args):
             tools = hotpotqa_tools
     elif args.benchmark_name == "parallelqa":
         if args.react:
-            tools = parallelqa_react_generate_tools(
-                model_name=model_name, api_key=args.api_key
-            )
+            tools = parallelqa_react_generate_tools(args, model_name)
         else:
-            tools = parallelqa_generate_tools(
-                model_name=model_name, api_key=args.api_key, callbacks=None
-            )
+            tools = parallelqa_generate_tools(args, model_name)
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
     return tools
@@ -95,14 +100,14 @@ def get_tools(model_name, args):
 def get_configs(args):
     if args.benchmark_name == "movie":
         if args.react:
-            configs = MOVIE_CONFIGS
-        else:
             configs = MOVIE_REACT_CONFIGS
+        else:
+            configs = MOVIE_CONFIGS
     elif args.benchmark_name == "hotpotqa":
         if args.react:
-            configs = HOTPOTQA_CONFIGS
-        else:
             configs = HOTPOTQA_REACT_CONFIGS
+        else:
+            configs = HOTPOTQA_CONFIGS
     elif args.benchmark_name == "parallelqa":
         if args.react:
             configs = PARALLELQA_REACT_CONFIGS
@@ -113,18 +118,6 @@ def get_configs(args):
     return configs
 
 
-def get_react_prompt(args):
-    if args.benchmark_name == "movie":
-        prompt = MOVIE_REACT_PROMPT
-    elif args.benchmark_name == "hotpotqa":
-        prompt = HOTPOTQA_REACT_PROMPT
-    elif args.benchmark_name == "parallelqa":
-        prompt = PARALLELQA_REACT_PROMPT
-    else:
-        raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
-    return prompt
-
-
 async def main():
     configs = get_configs(args)
     model_name = args.model_name or configs["default_model"]
@@ -132,11 +125,15 @@ async def main():
     tools = get_tools(model_name, args)
 
     if args.react:
-        prompt = get_react_prompt(args)
+        assert "prompt" in configs, "React config requires a prompt"
+        prompt = configs["prompt"][args.model_type]
         print("Run React")
-        llm = ChatOpenAI(
+        llm = get_model(
+            model_type=args.model_type,
             model_name=model_name,
-            openai_api_key=args.api_key,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=False,
             temperature=0,
         )
         agent = initialize_react_agent_executor(
@@ -147,31 +144,37 @@ async def main():
         )
 
     else:
-        print("Run Octopus")
-        llm = ChatOpenAI(
+        print("Run LLM Compiler")
+        # can be streaming or not
+        llm = get_model(
+            model_type=args.model_type,
             model_name=model_name,
-            openai_api_key=args.api_key,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=False,
+            temperature=0,
+        )
+        planner_llm = get_model(
+            model_type=args.model_type,
+            model_name=model_name,
+            api_key=args.api_key,
+            vllm_port=args.vllm_port,
+            stream=args.stream,
             temperature=0,
         )
 
-        # can be streaming or not
-        planner_llm = ChatOpenAI(
-            model_name=model_name,
-            openai_api_key=args.api_key,
-            temperature=0,
-            streaming=args.stream,
-        )
+        prompts = configs["prompts"][args.model_type]
 
         agent = LLMCompiler(
             tools=tools,
             planner_llm=planner_llm,
-            planner_example_prompt=configs["planner_prompt"],
-            planner_example_prompt_replan=configs.get("planner_prompt_replan"),
+            planner_example_prompt=prompts["planner_prompt"],
+            planner_example_prompt_replan=prompts.get("planner_prompt_replan"),
             planner_stop=[END_OF_PLAN],
             planner_stream=args.stream,
             agent_llm=llm,
-            joinner_prompt=configs["output_prompt"],
-            joinner_prompt_final=configs.get("output_prompt_final"),
+            joinner_prompt=prompts["output_prompt"],
+            joinner_prompt_final=prompts.get("output_prompt_final"),
             max_replans=configs["max_replans"],
             benchmark=False,
         )

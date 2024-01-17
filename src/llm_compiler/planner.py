@@ -6,6 +6,7 @@ from uuid import UUID
 
 from langchain.callbacks.base import AsyncCallbackHandler, Callbacks
 from langchain.chat_models.base import BaseChatModel
+from langchain.llms.base import BaseLLM
 from langchain.schema import LLMResult
 from langchain.schema.messages import HumanMessage, SystemMessage
 
@@ -225,19 +226,30 @@ class Planner:
             system_prompt = self.system_prompt
             human_prompt = f"Question: {inputs['input']}"
 
-        messages = [
-            SystemMessage(content=system_prompt),
-            HumanMessage(content=human_prompt),
-        ]
+        if isinstance(self.llm, BaseChatModel):
+            messages = [
+                SystemMessage(content=system_prompt),
+                HumanMessage(content=human_prompt),
+            ]
+            llm_response = await self.llm._call_async(
+                messages,
+                callbacks=callbacks,
+                stop=self.stop,
+            )
+            response = llm_response.content
+        elif isinstance(self.llm, BaseLLM):
+            message = system_prompt + "\n\n" + human_prompt
+            response = await self.llm.apredict(
+                message,
+                callbacks=callbacks,
+                stop=self.stop,
+            )  # type: ignore
+        else:
+            raise ValueError("LLM must be either BaseChatModel or BaseLLM")
 
-        llm_response = await self.llm._call_async(
-            messages,
-            callbacks=callbacks,
-            stop=self.stop,
-        )
-        log("LLMCompiler planner response: \n", llm_response.content, block=True)
+        log("LLMCompiler planner response: \n", response, block=True)
 
-        return llm_response.content
+        return response
 
     async def plan(
         self, inputs: dict, is_replan: bool, callbacks: Callbacks = None, **kwargs: Any
