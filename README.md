@@ -22,6 +22,7 @@ consistently demonstrated **latency speedup, cost saving, and accuracy improveme
 For more details, please check out our [paper](https://arxiv.org/abs/2312.04511).
 
 ## News
+* 📌 [1/17] Running custom models using vLLM supported
 * 🦙 [12/29] LLMCompiler is available on [LlamaIndex](https://llamahub.ai/l/llama_packs-agents-llm_compiler?from=llama_packs)
 
 ---
