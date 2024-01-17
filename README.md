@@ -43,15 +43,24 @@ pip install -r requirements.txt
 
 ---
 ## Basic Runs
-To reproduce the evaluation results in the paper, run the following command:
+To reproduce the evaluation results in the paper, run the following command.
 ```
 python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-name} --store {store-path} [--logging] [--stream]
+```
+
+To run a custom models served using the vLLM framework, run the following command.
+
+Detailed instructions for serving custom models with the vLLM framework can be found in the [vLLM documentation](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-compatible-server).
+
+Note that the pre-defined prompts in the default configuration files are tailored for (non-chat) LLaMA-2 70B and might need adjustments for different models.
+```
+python run_llm_compiler.py --model_type vllm --benchmark {benchmark-name} --store {store-path} --model_name {vllm-model-name} --vllm_port {vllm-port} [--logging]
 ```
 
 * `--api_key`: OpenAI API Key
 * `--benchmark`: Benchmark name. Use `hotpotqa`, `movie`, and `parallelqa` to evaluate LLMCompiler on the HotpotQA, Movie Recommendation, and ParallelQA benchmarks, respectively.
 * `--store`: Path to save the result. Question, true label, prediction, and latency per example will be stored in a JSON format.
-* `--logging`: (Optional) Enables logging.
+* `--logging`: (Optional) Enables logging. Not yet supported for vLLM.
 * `--stream`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
 * `--react`: (Optional) Use ReAct instead of LLMCompiler for baseline evaluation.
 
