@@ -41,12 +41,12 @@ def run_llm_math_chain_factory(llm_math_chain):
                 context_str = "\n\n".join(context_strs)
             prompt = (
                 "Answer the Question based on the Context. When you write down a expression, it MUST ONLY consists of numbers and operators. "
-                "Here are some guidelines:\n\n"
+                "Here are some guidelines that you will be PANALIZED if you don't follow:\n\n"
                 "  - When you are asked for differences, you consider the absolute value of the difference. Difference of two numbers is always positive."
                 "For instance, the difference between 1 and 2 is 1, not -1.\n"
                 "  - When you are applying operations (e.g. difference, summation, ratio, etc.) between multiple values in the Context, you must unify the units of those numbers. "
                 "For instance, you cannot add 1 meter to 1 foot.\n"
-                "     - You must pick the values in the same units if all the values are available in the same units.\n"
+                "     - You must pick the values in the same units if all the values are avaliable in the same units.\n"
                 "     - If not, you must convert them to the same units before applying the operation.\n"
                 "  - You MUST strictly follow the unit (e.g. meter, kilometer, million, etc.) you were asked.\n"
                 "     - If the Context has the numbers in same units as the question, you can directly use them.\n"
@@ -55,7 +55,6 @@ def run_llm_math_chain_factory(llm_math_chain):
                 "you must convert the distance to kilometers.\n"
                 "  - If you are asked about a particular number in millions, billions, or any other unit, the number should be written without specifying the unit. "
                 "For example, if you are asked for 100 millions, it should be written as 100, not 100 million or 100,000,000.\n"
-                '  - Never introduce a variable. For instance "gazelle_max_speed * 1.4" is not allowed. Pick up a correct number from the given context.\n'
                 "\n"
                 f"{context_str}\n\n"
                 f"Question: {question}\n\n"
