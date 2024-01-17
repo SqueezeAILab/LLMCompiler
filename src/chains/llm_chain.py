@@ -31,6 +31,8 @@ from src.chains.chain import Chain
 
 logger = logging.getLogger(__name__)
 
+MAX_RETRY_GENERATE = 10
+
 
 class LLMChain(Chain):
     """Chain to run queries against LLMs.
@@ -104,12 +106,33 @@ class LLMChain(Chain):
     ) -> LLMResult:
         """Generate LLM result from inputs."""
         prompts, stop = self.prep_prompts(input_list, run_manager=run_manager)
-        return self.llm.generate_prompt(
-            prompts,
-            stop,
-            callbacks=run_manager.get_child() if run_manager else None,
-            **self.llm_kwargs,
-        )
+        # TODO: this is a hack to make sure that the stop token always contains EOR
+        if stop is not None:
+            stop += ["<END_OF_RESPONSE>"]
+        else:
+            stop = ["<END_OF_RESPONSE>"]
+
+        # For the llama usage, generation sometimes runs into context length limit error.
+        # Add a retry logic to avoid this error.
+        for _ in range(MAX_RETRY_GENERATE):
+            try:
+                return self.llm.generate_prompt(
+                    prompts,
+                    stop,
+                    callbacks=run_manager.get_child() if run_manager else None,
+                    **self.llm_kwargs,
+                )
+            except:
+                text = prompts[0].text
+                # Try removing in-context examples
+                first_index = text.find("Question:")
+                second_index = text.find("Question:", first_index + 1)
+                if first_index != -1 and second_index != -1:
+                    prompts[0].text = text[:first_index] + text[second_index:]
+                else:
+                    # otherwise, simply cut the context
+                    prompts[0].text = text[400:]
+                print("Length shortened", len(prompts[0].text))
 
     async def agenerate(
         self,
@@ -118,12 +141,32 @@ class LLMChain(Chain):
     ) -> LLMResult:
         """Generate LLM result from inputs."""
         prompts, stop = await self.aprep_prompts(input_list, run_manager=run_manager)
-        return await self.llm.agenerate_prompt(
-            prompts,
-            stop,
-            callbacks=run_manager.get_child() if run_manager else None,
-            **self.llm_kwargs,
-        )
+        # TODO: this is a hack to make sure that the stop token always contains EOR
+        if stop is not None:
+            stop += ["<END_OF_RESPONSE>"]
+        else:
+            stop = ["<END_OF_RESPONSE>"]
+        # For the llama usage, generation sometimes runs into context length limit error.
+        # Add a retry logic to avoid this error.
+        for _ in range(MAX_RETRY_GENERATE):
+            try:
+                return await self.llm.agenerate_prompt(
+                    prompts,
+                    stop,
+                    callbacks=run_manager.get_child() if run_manager else None,
+                    **self.llm_kwargs,
+                )
+            except:
+                text = prompts[0].text
+                # Try removing in-context examples
+                first_index = text.find("Question:")
+                second_index = text.find("Question:", first_index + 1)
+                if first_index != -1 and second_index != -1:
+                    prompts[0].text = text[:first_index] + text[second_index:]
+                else:
+                    # otherwise, simply cut the context
+                    prompts[0].text = text[400:]
+                print("Length shortened", len(prompts[0].text))
 
     def prep_prompts(
         self,

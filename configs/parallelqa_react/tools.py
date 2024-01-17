@@ -1,8 +1,7 @@
-from langchain.chat_models import ChatOpenAI
-
 from src.agents.tools import Tool
 from src.chains.llm_math_chain import LLMMathChain
 from src.docstore.wikipedia import DocstoreExplorer, ReActWikipedia
+from src.utils.model_utils import get_model
 
 
 def run_llm_math_chain_factory(llm_math_chain):
@@ -30,15 +29,16 @@ web_searcher = ReActWikipedia()
 docstore = DocstoreExplorer(web_searcher)
 
 
-def generate_tools(model_name, api_key):
-    llm_math_chain = ChatOpenAI(
+def generate_tools(args, model_name):
+    llm_math_chain = get_model(
+        model_type=args.model_type,
         model_name=model_name,
-        openai_api_key=api_key,
+        api_key=args.api_key,
+        vllm_port=args.vllm_port,
+        stream=False,
         temperature=0,
     )
-
     llm_math_chain = LLMMathChain.from_llm(llm=llm_math_chain, verbose=True)
-
     return [
         Tool(
             name="Search",

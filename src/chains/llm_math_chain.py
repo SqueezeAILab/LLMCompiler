@@ -26,17 +26,7 @@ _PROMPT_TEMPLATE = """Translate a math problem into a expression that can be exe
 You MUST follow the following guidelines:
  - Do not use "where(...)" expressions in your code since it is not supported.
  - Do not use "fmax(...)" expression in your code since it is not supported. Use "max(...)" instead.
- - Never introduce a variable. For instance "gazelle_max_speed * 1.4" is not allowed. Pick up a correct number from the given context.
-
-Question: ${{Question with math problem.}}
-```text
-${{single line mathematical expression that solves the problem}}
-```
-...numexpr.evaluate(text)...
-```output
-${{Output of running the code}}
-```
-Answer: ${{Answer}}
+ - You MUST never introduce a new variable in any mathmatical expression. The mathematical expression MUST ONLY contain numbers and operations. For instance gazelle_max_speed * 0.12 is NEVER allowed and you must find the numerical value of the gazelle's max speed from the given context.
 
 Begin.
 
@@ -59,6 +49,20 @@ Question: 37593^(1/5)
 8.222831614237718
 ```
 Answer: 8.222831614237718
+
+Question: Answer the Question based on the Context.
+
+Context: Steven can run at the maximum speed up 123km/h.
+
+Question: What is the speed of Steven in km/h when he was 10% faster than now?
+```text
+123 * 1.1
+```
+...numexpr.evaluate(123 * 1.1)...
+```output
+135.3
+```
+Answer: 135.3
 
 Question: {question}
 """
@@ -196,11 +200,12 @@ class LLMMathChain(Chain):
                 )
             )
         except Exception as e:
-            print(
-                f'LLMMathChain._evaluate("{expression}") raised error: {e}.'
-                " Please try again with a valid numerical expression"
+            msg = (
+                f'"{expression}" is not a valid expression, and raised error: {e}.'
+                " You must try again with a valid numerical expression"
             )
-            return "error at math chain"
+            print(msg)
+            return msg
 
         # Remove any leading and trailing brackets from the output
         return re.sub(r"^\[|\]$", "", output)
@@ -222,8 +227,7 @@ class LLMMathChain(Chain):
         elif "Answer:" in llm_output:
             answer = "Answer: " + llm_output.split("Answer:")[-1]
         else:
-            return {self.output_key: "Answer: error at math chain"}
-            # raise ValueError(f"unknown format from LLM: {llm_output}")
+            raise ValueError(f"unknown format from LLM: {llm_output}")
         return {self.output_key: answer}
 
     async def _aprocess_llm_result(

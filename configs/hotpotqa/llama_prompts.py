@@ -1,0 +1,72 @@
+from src.llm_compiler.constants import END_OF_PLAN, JOINNER_FINISH
+
+PLANNER_PROMPT = (
+    "Question: Are Pam Veasey and Jon Jost both American?\n"
+    '1. search("Pam Veasey")\n'
+    '2. search("Jon Jost")\n'
+    "Thought: I can answer the question now.\n"
+    f"3. join(){END_OF_PLAN}\n"
+    "###\n"
+    "\n"
+    "Question: What profession does Nicholas Ray and Elia Kazan have in common?\n"
+    '1. search("Nicholas Ray")\n'
+    '2. search("Elia Kazan")\n'
+    "Thought: I can answer the question now.\n"
+    f"3. join(){END_OF_PLAN}\n"
+    "###\n"
+    "\n"
+    "Question: What is the number of kids of older person between Jeff Bezos and Elon Musk?\n"
+    '1. search("Jeff Bezos")\n'
+    '2. search("Elon Musk")\n'
+    "Thought: I cannot answer the question before I know who is older.\n"
+    f"3. join(){END_OF_PLAN}\n"
+    "###\n"
+    "\n"
+)
+
+OUTPUT_PROMPT = (
+    "You must solve the Question. You are given Observations and you can use them to solve the Question. "
+    "Then you MUST provide a Thought, and then an Action.\n"
+    "Answer should always be a single item and MUST not be multiple choices.\n"
+    "You will be given a question and some Wikipedia passages, which are the observations.\n\n"
+    "Thought step can reason about the observations in 1-2 sentences, and Action can be only one type:\n"
+    f" (1) {JOINNER_FINISH}(answer): returns the answer and finishes the task. "
+    "\n"
+    "Follow the guidelines that you will die if you don't follow:\n"
+    "  - Answer should be short and a single item and MUST not be multiple choices.\n"
+    "  - Thought should be 1-2 sentences.\n"
+    "  - Action can only be Finish, and you MUST NEVER take any other actions\n"
+    "  - You must say <END_OF_RESPONSE> at the end of your response.\n"
+    "\n"
+    "\n"
+    "Here are some examples:\n"
+    "\n"
+    "Question: Which magazine was started first Arthur's Magazine or First for Women?\n"
+    "search(Arthur's Magazine)\n"
+    "Observation: Arthur's Magazine (1844-1846) was an American literary periodical published in Philadelphia in the 19th century.\n"
+    "search(First for Women)\n"
+    "Observation: First for Women is a woman's magazine published by Bauer Media Group in the USA.[1] The magazine was started in 1989.\n"
+    "Thought: Arthur's Magazine was started in 1844. First for Women was started in 1989. 1844 (Arthur's Magazine) < 1989 (First for Women), so Arthur's Magazine was started first.\n"
+    f"Action: {JOINNER_FINISH}(Arthur's Magazine)\n"
+    "<END_OF_RESPONSE>\n"
+    "\n"
+    "\n"
+    "Question: Were Pavel Urysohn and Leonid Levin known for the same type of work?\n"
+    "search(Pavel Urysohn)\n"
+    "Observation: Pavel Samuilovich Urysohn (February 3, 1898 - August 17, 1924) was a Soviet mathematician who is best known for his contributions in dimension theory.\n"
+    "search(Leonid Levin)\n"
+    "Observation: Leonid Anatolievich Levin is a Soviet-American mathematician and computer scientist.\n"
+    "Thought: Pavel Urysohn is a mathematician. Leonid Levin is a mathematician and computer scientist. So Pavel Urysohn and Leonid Levin have the same type of work.\n"
+    f"Action: {JOINNER_FINISH}(yes)\n"
+    "<END_OF_RESPONSE>\n"
+    "\n"
+    "\n"
+    "Question: What profession does Nicholas Ray and Elia Kazan have in common?\n"
+    "Observation: Nicholas Ray (born Raymond Nicholas Kienzle Jr., August 7, 1911 - June 16, 1979) was an American film director best known for the 1955 film Rebel Without a Cause.\n"
+    "Observation: Elia Kazan was an American film and theatre director.\n"
+    "Thought: Professions of Nicholas Ray are director, screenwriter, and actor. Professions of Elia Kazan are director. So profession Nicholas Ray and Elia Kazan have in common is director.\n"
+    f"Action: {JOINNER_FINISH}(director)\n"
+    "<END_OF_RESPONSE>\n"
+    "\n"
+    "\n"
+)

@@ -5,7 +5,9 @@ from langchain.callbacks.manager import (
     AsyncCallbackManagerForChainRun,
     CallbackManagerForChainRun,
 )
+from langchain.chat_models.base import BaseChatModel
 from langchain.llms import BaseLLM
+from langchain.llms.base import BaseLLM
 from langchain.prompts.base import StringPromptValue
 
 from src.callbacks.callbacks import AsyncStatsCallbackHandler
@@ -24,15 +26,22 @@ class LLMCompilerAgent:
         self.llm = llm
 
     async def arun(self, prompt: str, callbacks=None) -> str:
-        return await self.llm.agenerate_prompt(
+        response = await self.llm.agenerate_prompt(
             prompts=[StringPromptValue(text=prompt)],
-            stop=None,
+            stop=["<END_OF_RESPONSE>"],
             callbacks=callbacks,
         )
+        if isinstance(self.llm, BaseChatModel):
+            return response.generations[0][0].message.content
+
+        if isinstance(self.llm, BaseLLM):
+            return response.generations[0][0].text
+
+        raise ValueError("LLM must be either BaseChatModel or BaseLLM")
 
 
 class LLMCompiler(Chain, extra="allow"):
-    """LLMCompuler Engine."""
+    """LLMCompiler Engine."""
 
     """The step container to use."""
     input_key: str = "input"
@@ -206,7 +215,7 @@ class LLMCompiler(Chain, extra="allow"):
         response = await self.agent.arun(
             prompt, callbacks=[self.executor_callback] if self.benchmark else None
         )
-        raw_answer = cast(str, response.generations[0][0].message.content)
+        raw_answer = cast(str, response)
         log("Question: \n", input_query, block=True)
         log("Raw Answer: \n", raw_answer, block=True)
         thought, answer, is_replan = self._parse_joinner_output(raw_answer)
