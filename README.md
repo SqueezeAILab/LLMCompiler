@@ -49,9 +49,7 @@ python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-nam
 ```
 
 To run a custom models served using the vLLM framework, run the following command.
-
 Detailed instructions for serving custom models with the vLLM framework can be found in the [vLLM documentation](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-compatible-server).
-
 Note that the pre-defined prompts in the default configuration files are tailored for (non-chat) LLaMA-2 70B and might need adjustments for different models.
 ```
 python run_llm_compiler.py --model_type vllm --benchmark {benchmark-name} --store {store-path} --model_name {vllm-model-name} --vllm_port {vllm-port} [--logging]
