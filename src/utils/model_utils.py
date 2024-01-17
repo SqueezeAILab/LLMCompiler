@@ -33,7 +33,6 @@ def get_model(
             openai_api_base=f"http://localhost:{vllm_port}/v1",
             model_name=model_name,
             temperature=temperature,
-            max_tokens=500,
             max_retries=1,
         )
 

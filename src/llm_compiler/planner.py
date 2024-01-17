@@ -245,7 +245,7 @@ class Planner:
                 stop=self.stop,
             )  # type: ignore
         else:
-            raise NotImplementedError("LLM must be either BaseChatModel or BaseLLM")
+            raise ValueError("LLM must be either BaseChatModel or BaseLLM")
 
         log("LLMCompiler planner response: \n", response, block=True)
 

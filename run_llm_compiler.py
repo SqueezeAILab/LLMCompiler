@@ -144,7 +144,7 @@ async def main():
         )
 
     else:
-        print("Run Octopus")
+        print("Run LLM Compiler")
         # can be streaming or not
         llm = get_model(
             model_type=args.model_type,
@@ -163,16 +163,18 @@ async def main():
             temperature=0,
         )
 
+        prompts = configs["prompts"][args.model_type]
+
         agent = LLMCompiler(
             tools=tools,
             planner_llm=planner_llm,
-            planner_example_prompt=configs["planner_prompt"],
-            planner_example_prompt_replan=configs.get("planner_prompt_replan"),
+            planner_example_prompt=prompts["planner_prompt"],
+            planner_example_prompt_replan=prompts.get("planner_prompt_replan"),
             planner_stop=[END_OF_PLAN],
             planner_stream=args.stream,
             agent_llm=llm,
-            joinner_prompt=configs["output_prompt"],
-            joinner_prompt_final=configs.get("output_prompt_final"),
+            joinner_prompt=prompts["output_prompt"],
+            joinner_prompt_final=prompts.get("output_prompt_final"),
             max_replans=configs["max_replans"],
             benchmark=False,
         )
