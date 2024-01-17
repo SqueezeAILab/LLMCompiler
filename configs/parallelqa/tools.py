@@ -55,6 +55,7 @@ def run_llm_math_chain_factory(llm_math_chain):
                 "you must convert the distance to kilometers.\n"
                 "  - If you are asked about a particular number in millions, billions, or any other unit, the number should be written without specifying the unit. "
                 "For example, if you are asked for 100 millions, it should be written as 100, not 100 million or 100,000,000.\n"
+                ' - Never introduce a variable. For instance "gazelle_max_speed * 1.4" is not allowed. Pick up a correct number from the given context.\n'
                 "\n"
                 f"{context_str}\n\n"
                 f"Question: {question}\n\n"
