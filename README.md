@@ -80,7 +80,6 @@ Please refer to `configs/hotpotqa`, `configs/movie`, and `configs/parallelqa` as
 ---
 ## Roadmap
 We are planning to update the following features soon:
-* Support for open-source models (e.g. LLaMA-2)
 * Tree-of-Thoughts evaluation we used in the paper
 
 ---
