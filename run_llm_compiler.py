@@ -197,20 +197,20 @@ async def main():
         label = normalize_answer(_label)
 
         if str(id) not in all_results:
-            octopus_answer, octopus_time = await arun_and_time(
+            raw_answer, e2e_time = await arun_and_time(
                 agent.arun,
                 question,
                 callbacks=[logging_callback] if logging_callback is not None else None,
             )
-            normalized_octopus_answer = normalize_answer(octopus_answer)
-            print(f"Answer: {octopus_answer}")
-            print(normalized_octopus_answer, "<>", label)
-            print("time: ", octopus_time)
+            normalized_answer = normalize_answer(raw_answer)
+            print(f"Answer: {raw_answer}")
+            print(normalized_answer, "<>", label)
+            print("time: ", e2e_time)
             all_results[id] = {
                 "question": question,
                 "label": _label,  # not normalized
-                "answer": octopus_answer,  # not normalized
-                "time": octopus_time,
+                "answer": raw_answer,  # not normalized
+                "time": e2e_time,
             }
             stats = None
             if args.do_benchmark and args.react:
