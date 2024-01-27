@@ -120,7 +120,7 @@ class LLMCompiler(Chain, extra="allow"):
             stats["planner"] = self.planner_callback.get_stats()
             stats["executor"] = self.executor_callback.get_stats()
             stats["total"] = {
-                k: v + stats["executor"][k] for k, v in stats["planner"].items()
+                k: v + stats["executor"].get(k, 0) for k, v in stats["planner"].items()
             }
 
         return stats
@@ -269,6 +269,8 @@ class LLMCompiler(Chain, extra="allow"):
                     else None,
                 )
                 log("Graph of tasks: ", tasks, block=True)
+                if self.benchmark:
+                    self.planner_callback.additional_fields["num_tasks"] = len(tasks)
                 task_fetching_unit.set_tasks(tasks)
                 await task_fetching_unit.schedule()
             tasks = task_fetching_unit.tasks
