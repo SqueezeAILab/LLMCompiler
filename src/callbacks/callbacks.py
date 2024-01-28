@@ -54,6 +54,7 @@ class AsyncStatsCallbackHandler(AsyncCallbackHandler):
         self.encoder = tiktoken.encoding_for_model("gpt-4")
         self.stream = stream
         self.all_times = []
+        self.additional_fields = {}
         self.start_time = 0
 
     async def on_chat_model_start(self, serialized, prompts, **kwargs):
@@ -87,6 +88,7 @@ class AsyncStatsCallbackHandler(AsyncCallbackHandler):
         self.input_tokens = 0
         self.output_tokens = 0
         self.all_times = []
+        self.additional_fields = {}
 
     def get_stats(self) -> dict[str, int]:
         return {
@@ -94,4 +96,5 @@ class AsyncStatsCallbackHandler(AsyncCallbackHandler):
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
             "all_times": self.all_times,
+            **self.additional_fields,
         }

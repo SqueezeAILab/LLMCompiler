@@ -20,7 +20,7 @@ from configs.parallelqa_react.configs import CONFIGS as PARALLELQA_REACT_CONFIGS
 from configs.parallelqa_react.tools import (
     generate_tools as parallelqa_react_generate_tools,
 )
-from src.chains.llm_math_chain import LLMMathChain
+from src.callbacks.callbacks import StatsCallbackHandler
 from src.llm_compiler.constants import END_OF_PLAN
 from src.llm_compiler.llm_compiler import LLMCompiler
 from src.react.base import initialize_react_agent_executor
@@ -52,6 +52,7 @@ argparser.add_argument(
 )
 argparser.add_argument("--store", type=str, required=True, help="store path")
 argparser.add_argument("--api_key", type=str, default=None, help="openai api key")
+argparser.add_argument("--do_benchmark", action="store_true", help="do benchmark")
 
 # vllm-specific arguments
 argparser.add_argument("--vllm_port", type=int, default=None, help="vllm port")
@@ -124,10 +125,14 @@ async def main():
     dataset = get_dataset(args)
     tools = get_tools(model_name, args)
 
+    logging_callback = None
     if args.react:
         assert "prompt" in configs, "React config requires a prompt"
         prompt = configs["prompt"][args.model_type]
         print("Run React")
+        if args.do_benchmark:
+            logging_callback = StatsCallbackHandler()
+
         llm = get_model(
             model_type=args.model_type,
             model_name=model_name,
@@ -176,7 +181,7 @@ async def main():
             joinner_prompt=prompts["output_prompt"],
             joinner_prompt_final=prompts.get("output_prompt_final"),
             max_replans=configs["max_replans"],
-            benchmark=False,
+            benchmark=args.do_benchmark,
         )
 
     all_results = {}
@@ -192,17 +197,31 @@ async def main():
         label = normalize_answer(_label)
 
         if str(id) not in all_results:
-            octopus_answer, octopus_time = await arun_and_time(agent.arun, question)
-            normalized_octopus_answer = normalize_answer(octopus_answer)
-            print(f"Answer: {octopus_answer}")
-            print(normalized_octopus_answer, "<>", label)
-            print("time: ", octopus_time)
+            raw_answer, e2e_time = await arun_and_time(
+                agent.arun,
+                question,
+                callbacks=[logging_callback] if logging_callback is not None else None,
+            )
+            normalized_answer = normalize_answer(raw_answer)
+            print(f"Answer: {raw_answer}")
+            print(normalized_answer, "<>", label)
+            print("time: ", e2e_time)
             all_results[id] = {
                 "question": question,
                 "label": _label,  # not normalized
-                "answer": octopus_answer,  # not normalized
-                "time": octopus_time,
+                "answer": raw_answer,  # not normalized
+                "time": e2e_time,
             }
+            stats = None
+            if args.do_benchmark and args.react:
+                assert logging_callback is not None
+                stats = {"total": logging_callback.get_stats()}
+                logging_callback.reset()
+            elif args.do_benchmark and not args.react:
+                stats = agent.get_all_stats()
+                agent.reset_all_stats()
+
+            all_results[id]["stats"] = stats
 
         flush_results(args.store, all_results)
         # shutil.copyfile(args.store, args.store + ".bak")  # uncomment to backup

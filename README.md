@@ -59,6 +59,7 @@ python run_llm_compiler.py --model_type vllm --benchmark {benchmark-name} --stor
 * `--benchmark`: Benchmark name. Use `hotpotqa`, `movie`, and `parallelqa` to evaluate LLMCompiler on the HotpotQA, Movie Recommendation, and ParallelQA benchmarks, respectively.
 * `--store`: Path to save the result. Question, true label, prediction, and latency per example will be stored in a JSON format.
 * `--logging`: (Optional) Enables logging. Not yet supported for vLLM.
+* `--do_benchmark`: (Optional) Do additional benchmarking on detailed run-time statistics.
 * `--stream`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
 * `--react`: (Optional) Use ReAct instead of LLMCompiler for baseline evaluation.
 
