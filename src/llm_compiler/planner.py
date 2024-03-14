@@ -107,7 +107,6 @@ class StreamingGraphParser:
         if match := re.match(THOUGHT_PATTERN, self.buffer):
             # Optionally, action can be preceded by a thought
             self.thought = match.group(1)
-            self.buffer = suffix
         elif match := re.match(ACTION_PATTERN, self.buffer):
             # if action is parsed, return the task, and clear the buffer
             idx, tool_name, args, _ = match.groups()
@@ -119,9 +118,9 @@ class StreamingGraphParser:
                 args=args,
                 thought=self.thought,
             )
-            self.buffer = suffix
             self.thought = ""
             return task
+
         return None
 
     def ingest_token(self, token: str) -> Optional[Task]:
@@ -130,7 +129,9 @@ class StreamingGraphParser:
             prefix, suffix = token.split("\n", 1)
             prefix = prefix.strip()
             self.buffer += prefix + "\n"
-            return self._match_buffer_and_generate_task(suffix)
+            matched_item = self._match_buffer_and_generate_task(suffix)
+            self.buffer = suffix
+            return matched_item
         else:
             self.buffer += token
 
