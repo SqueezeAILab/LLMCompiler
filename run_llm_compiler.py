@@ -37,7 +37,7 @@ argparser.add_argument(
     "--model_type",
     type=str,
     default="openai",
-    choices=["openai", "vllm"],
+    choices=["openai", "vllm", "azure"],
     help="model type",
 )
 argparser.add_argument(
@@ -168,7 +168,10 @@ async def main():
             temperature=0,
         )
 
-        prompts = configs["prompts"][args.model_type]
+        model_type = args.model_type
+        if model_type == "azure":
+            model_type = "openai"
+        prompts = configs["prompts"][model_type]
 
         agent = LLMCompiler(
             tools=tools,

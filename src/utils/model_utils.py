@@ -1,4 +1,5 @@
-from langchain.chat_models import ChatOpenAI
+import os
+from langchain.chat_models import ChatOpenAI, AzureChatOpenAI
 from langchain.llms import OpenAI
 
 
@@ -18,6 +19,15 @@ def get_model(
             openai_api_key=api_key,  # type: ignore
             streaming=stream,
             temperature=temperature,
+        )
+    elif model_type == "azure":
+        llm = AzureChatOpenAI(
+            azure_endpoint=os.environ["AZURE_ENDPOINT"],
+            openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+            deployment_name=os.environ["AZURE_DEPLOYMENT_NAME"],
+            openai_api_key=os.environ["AZURE_OPENAI_API_KEY"],
+            openai_api_type="azure",
+            # streaming=args.stream,
         )
 
     elif model_type == "vllm":
