@@ -136,7 +136,6 @@ async def main():
         llm = get_model(
             model_type=args.model_type,
             model_name=model_name,
-            api_key=args.api_key,
             vllm_port=args.vllm_port,
             stream=False,
             temperature=0,
@@ -154,7 +153,6 @@ async def main():
         llm = get_model(
             model_type=args.model_type,
             model_name=model_name,
-            api_key=args.api_key,
             vllm_port=args.vllm_port,
             stream=False,
             temperature=0,
@@ -162,7 +160,6 @@ async def main():
         planner_llm = get_model(
             model_type=args.model_type,
             model_name=model_name,
-            api_key=args.api_key,
             vllm_port=args.vllm_port,
             stream=args.stream,
             temperature=0,
