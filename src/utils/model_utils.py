@@ -6,17 +6,14 @@ from langchain.llms import OpenAI
 def get_model(
     model_type,
     model_name,
-    api_key,
     vllm_port,
     stream,
     temperature=0,
 ):
     if model_type == "openai":
-        if api_key is None:
-            raise ValueError("api_key must be provided for openai model")
         llm = ChatOpenAI(
             model_name=model_name,  # type: ignore
-            openai_api_key=api_key,  # type: ignore
+            openai_api_key=os.environ["OPENAI_API_KEY"],  # type: ignore
             streaming=stream,
             temperature=temperature,
         )

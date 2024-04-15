@@ -45,8 +45,9 @@ pip install -r requirements.txt
 ---
 ## Basic Runs
 To reproduce the evaluation results in the paper, run the following command.
+You need to first register your OpenAI API key to the environment: `export OPENAI_API_KEY="sk-xxx"`
 ```
-python run_llm_compiler.py --api_key {openai-api-key} --benchmark {benchmark-name} --store {store-path} [--logging] [--stream]
+python run_llm_compiler.py --benchmark {benchmark-name} --store {store-path} [--logging] [--stream]
 ```
 
 To run a custom models served using the vLLM framework, run the following command.
@@ -56,7 +57,6 @@ Note that the pre-defined prompts in the default configuration files are tailore
 python run_llm_compiler.py --model_type vllm --benchmark {benchmark-name} --store {store-path} --model_name {vllm-model-name} --vllm_port {vllm-port} [--logging]
 ```
 
-* `--api_key`: OpenAI API Key
 * `--benchmark`: Benchmark name. Use `hotpotqa`, `movie`, and `parallelqa` to evaluate LLMCompiler on the HotpotQA, Movie Recommendation, and ParallelQA benchmarks, respectively.
 * `--store`: Path to save the result. Question, true label, prediction, and latency per example will be stored in a JSON format.
 * `--logging`: (Optional) Enables logging. Not yet supported for vLLM.

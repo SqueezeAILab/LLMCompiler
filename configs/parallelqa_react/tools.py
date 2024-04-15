@@ -33,7 +33,6 @@ def generate_tools(args, model_name):
     llm_math_chain = get_model(
         model_type=args.model_type,
         model_name=model_name,
-        api_key=args.api_key,
         vllm_port=args.vllm_port,
         stream=False,
         temperature=0,
