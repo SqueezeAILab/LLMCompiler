@@ -4,7 +4,7 @@ from configs.parallelqa_react.llama_prompts import PROMPT as LLAMA_PROMPT
 CONFIGS = {
     "default_model": "gpt-4-1106-preview",
     "prompt": {
-        "openai": GPT_PROMPT,
-        "vllm": LLAMA_PROMPT,
+        "gpt": GPT_PROMPT,
+        "llama": LLAMA_PROMPT,
     },
 }

@@ -251,9 +251,9 @@ class LLMCompiler(Chain, extra="allow"):
                         inputs=inputs,
                         task_queue=task_queue,
                         is_replan=not is_first_iter,
-                        callbacks=[self.planner_callback]
-                        if self.planner_callback
-                        else None,
+                        callbacks=(
+                            [self.planner_callback] if self.planner_callback else None
+                        ),
                     )
                 )
                 await task_fetching_unit.aschedule(
@@ -264,9 +264,9 @@ class LLMCompiler(Chain, extra="allow"):
                     inputs=inputs,
                     is_replan=not is_first_iter,
                     # callbacks=run_manager.get_child() if run_manager else None,
-                    callbacks=[self.planner_callback]
-                    if self.planner_callback
-                    else None,
+                    callbacks=(
+                        [self.planner_callback] if self.planner_callback else None
+                    ),
                 )
                 log("Graph of tasks: ", tasks, block=True)
                 if self.benchmark:

@@ -2,6 +2,7 @@ import argparse
 import asyncio
 import json
 import os
+import time
 import shutil
 
 import numpy as np
@@ -37,7 +38,7 @@ argparser.add_argument(
     "--model_type",
     type=str,
     default="openai",
-    choices=["openai", "vllm", "azure"],
+    choices=["openai", "vllm", "azure", "friendli"],
     help="model type",
 )
 argparser.add_argument(
@@ -53,6 +54,12 @@ argparser.add_argument(
 argparser.add_argument("--store", type=str, required=True, help="store path")
 argparser.add_argument("--api_key", type=str, default=None, help="openai api key")
 argparser.add_argument("--do_benchmark", action="store_true", help="do benchmark")
+argparser.add_argument(
+    "--sleep_per_iter",
+    type=int,
+    default=None,
+    help="Sleep seconds per iter to avoid rate limit",
+)
 
 # vllm-specific arguments
 argparser.add_argument("--vllm_port", type=int, default=None, help="vllm port")
@@ -124,11 +131,16 @@ async def main():
     model_name = args.model_name or configs["default_model"]
     dataset = get_dataset(args)
     tools = get_tools(model_name, args)
+    if args.model_type in ["openai", "azure"]:
+        prompt_type = "gpt"
+    else:
+        assert args.model_type in ["vllm", "friendli"]
+        prompt_type = "llama"
 
     logging_callback = None
     if args.react:
         assert "prompt" in configs, "React config requires a prompt"
-        prompt = configs["prompt"][args.model_type]
+        prompt = configs["prompt"][prompt_type]
         print("Run React")
         if args.do_benchmark:
             logging_callback = StatsCallbackHandler()
@@ -164,11 +176,7 @@ async def main():
             stream=args.stream,
             temperature=0,
         )
-
-        model_type = args.model_type
-        if model_type == "azure":
-            model_type = "openai"
-        prompts = configs["prompts"][model_type]
+        prompts = configs["prompts"][prompt_type]
 
         agent = LLMCompiler(
             tools=tools,
@@ -225,6 +233,9 @@ async def main():
 
         flush_results(args.store, all_results)
         # shutil.copyfile(args.store, args.store + ".bak")  # uncomment to backup
+
+        if args.sleep_per_iter:
+            time.sleep(args.sleep_per_iter)
 
     accuracy = np.average(
         [

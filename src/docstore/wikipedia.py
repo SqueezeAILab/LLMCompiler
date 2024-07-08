@@ -1,4 +1,5 @@
 """Wrapper around wikipedia API."""
+
 import ast
 import time
 from typing import List, Optional, Union

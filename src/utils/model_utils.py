@@ -26,6 +26,19 @@ def get_model(
             openai_api_type="azure",
             # streaming=args.stream,
         )
+    elif model_type == "friendli":
+        from langchain_community.llms.friendli import Friendli
+
+        if stream:
+            print(
+                "WARNING: Friendli does not support streaming. "
+                "Setting stream=False for friendli endpoints."
+            )
+        assert "FRIENDLI_TOKEN" in os.environ, "FRIENDLI_TOKEN must be provided"
+        llm = Friendli(
+            model=model_name,
+            temperature=temperature,
+        )
 
     elif model_type == "vllm":
         if vllm_port is None:

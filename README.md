@@ -64,7 +64,14 @@ python run_llm_compiler.py --model_type vllm --benchmark {benchmark-name} --stor
 * `--stream`: (Optional, Recommended) Enables streaming. It improves latency by streaming out tasks from the Planner to the Task Fetching Unit and Executor immediately after their generation, rather than blocking the Executor until all the tasks are generated from the Planner.
 * `--react`: (Optional) Use ReAct instead of LLMCompiler for baseline evaluation.
 
+### Azure Endpoint
 You can optionally use your Azure endpoint instead of OpenAI endpoint with `--model_type azure`. In this case, you need to provide the associated Azure configuration as the following fields in your environment: `AZURE_ENDPOINT`, `AZURE_OPENAI_API_VERSION`, `AZURE_DEPLOYMENT_NAME`, and `AZURE_OPENAI_API_KEY`.
+
+### Friendli Endpoint
+You can use [Friendli](https://friendli.ai/) endpoint with `--model_type friendli`. In this case, you need to provide Friendli API key in your environment: `FRIENDLI_TOKEN`. Additionally, you need to install Friendli Client:
+```
+pip install friendli-client
+```
 
 After the run is over, you can get the summary of the results by running the following command:
 ```
