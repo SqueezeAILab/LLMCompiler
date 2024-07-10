@@ -6,11 +6,11 @@ from configs.parallelqa.llama_prompts import PLANNER_PROMPT as LLAMA_PLANNER_PRO
 CONFIGS = {
     "default_model": "gpt-4-1106-preview",
     "prompts": {
-        "openai": {
+        "gpt": {
             "planner_prompt": GPT_PLANNER_PROMPT,
             "output_prompt": GPT_OUTPUT_PROMPT,
         },
-        "vllm": {
+        "llama": {
             "planner_prompt": LLAMA_PLANNER_PROMPT,
             "output_prompt": LLAMA_OUTPUT_PROMPT,
         },

@@ -1,4 +1,5 @@
 """Base interface that all chains should implement."""
+
 from __future__ import annotations
 
 import logging

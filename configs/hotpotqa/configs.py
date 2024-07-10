@@ -6,11 +6,11 @@ from configs.hotpotqa.llama_prompts import PLANNER_PROMPT as LLAMA_PLANNER_PROMP
 CONFIGS = {
     "default_model": "gpt-3.5-turbo-1106",
     "prompts": {
-        "openai": {
+        "gpt": {
             "planner_prompt": GPT_PLANNER_PROMPT,
             "output_prompt": GPT_OUTPUT_PROMPT,
         },
-        "vllm": {
+        "llama": {
             "planner_prompt": LLAMA_PLANNER_PROMPT,
             "output_prompt": LLAMA_OUTPUT_PROMPT,
         },
