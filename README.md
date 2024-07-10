@@ -22,6 +22,7 @@ consistently demonstrated **latency speedup, cost saving, and accuracy improveme
 For more details, please check out our [paper](https://arxiv.org/abs/2312.04511).
 
 ## News
+* 📌 [7/9] Friendli endpoints are supported for popular open-source models.
 * 🦜 [2/13] LLMCompiler is available within the [LangGraph](https://github.com/langchain-ai/langgraph/blob/main/examples/llm-compiler/LLMCompiler.ipynb) framework of [LangChain](https://github.com/langchain-ai).
 * 📌 [1/17] Running custom models using vLLM supported
 * 🦙 [12/29] LLMCompiler is available on [LlamaIndex](https://llamahub.ai/l/llama_packs-agents-llm_compiler?from=llama_packs)
