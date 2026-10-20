@@ -16,6 +16,7 @@ from src.llm_compiler.constants import JOINNER_REPLAN
 from src.llm_compiler.planner import Planner
 from src.llm_compiler.task_fetching_unit import Task, TaskFetchingUnit
 from src.tools.base import StructuredTool, Tool
+from src.tools.search_context import search_run
 from src.utils.logger_utils import log
 
 
@@ -236,6 +237,10 @@ class LLMCompiler(Chain, extra="allow"):
         inputs: Dict[str, Any],
         run_manager: Optional[AsyncCallbackManagerForChainRun] = None,
     ) -> Dict[str, Any]:
+        with search_run():
+            return await self._execute_plan(inputs, run_manager)
+
+    async def _execute_plan(self, inputs, run_manager=None):
         contexts = []
         joinner_thought = ""
         agent_scratchpad = ""
@@ -246,7 +251,7 @@ class LLMCompiler(Chain, extra="allow"):
             task_fetching_unit = TaskFetchingUnit()
             if self.planner_stream:
                 task_queue = asyncio.Queue()
-                asyncio.create_task(
+                planner_task = asyncio.create_task(
                     self.planner.aplan(
                         inputs=inputs,
                         task_queue=task_queue,
@@ -256,9 +261,14 @@ class LLMCompiler(Chain, extra="allow"):
                         ),
                     )
                 )
-                await task_fetching_unit.aschedule(
-                    task_queue=task_queue, func=lambda x: None
-                )
+                try:
+                    await task_fetching_unit.aschedule(
+                        task_queue=task_queue, func=lambda x: None
+                    )
+                finally:
+                    if not planner_task.done():
+                        planner_task.cancel()
+                    await asyncio.gather(planner_task, return_exceptions=True)
             else:
                 tasks = await self.planner.plan(
                     inputs=inputs,

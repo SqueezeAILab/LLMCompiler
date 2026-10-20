@@ -28,10 +28,17 @@ from src.react.base import initialize_react_agent_executor
 from src.utils.evaluation_utils import arun_and_time, compare_answer, normalize_answer
 from src.utils.logger_utils import enable_logging, flush_results
 from src.utils.model_utils import get_model
+from src.tools.parallel_search import resolve_search_tools
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--N", type=int, default=None, help="number of samples")
 argparser.add_argument("--react", action="store_true", help="Run ReAct")
+argparser.add_argument(
+    "--search_provider",
+    choices=["parallel"],
+    default=None,
+    help="Opt in to Parallel web search and page fetching (LLMCompiler only)",
+)
 argparser.add_argument("--stream", action="store_true", help="stream plan")
 argparser.add_argument("--logging", action="store_true", help="logging")
 argparser.add_argument(
@@ -65,6 +72,8 @@ argparser.add_argument(
 argparser.add_argument("--vllm_port", type=int, default=None, help="vllm port")
 
 args = argparser.parse_args()
+if args.react and args.search_provider:
+    argparser.error("--search_provider is supported by LLMCompiler, not --react")
 
 
 if args.logging:
@@ -102,7 +111,7 @@ def get_tools(model_name, args):
             tools = parallelqa_generate_tools(args, model_name)
     else:
         raise ValueError(f"Unknown benchmark name: {args.benchmark_name}")
-    return tools
+    return resolve_search_tools(tools, args.search_provider, react=args.react)
 
 
 def get_configs(args):

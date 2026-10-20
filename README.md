@@ -90,6 +90,38 @@ Please refer to `configs/hotpotqa`, `configs/movie`, and `configs/parallelqa` as
 
 
 ---
+## Optional Parallel web search
+
+[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp) adds
+free web search using Fast mode and page fetching, with no Parallel account or
+API key. Install the optional dependencies, then select it explicitly:
+
+```bash
+pip install -r requirements-parallel.txt
+python run_llm_compiler.py --benchmark_name hotpotqa --store results-parallel.json --search_provider parallel
+```
+
+This replaces the `search` tool with general web search and adds `fetch(url)` for
+reading a source page. It supports LLMCompiler, including `--stream`; `--react`
+continues to use its existing tools and cannot be combined with this option.
+Without `--search_provider`, all existing benchmark tools remain unchanged.
+Your selected language model still uses its usual configuration.
+
+Use a new `--store` file when changing providers, since existing answers are
+reused. Web search results differ from the Wikipedia-only paper benchmarks.
+Anonymous access is intended for exploration and light use and has rate limits.
+A failed or timed-out request becomes a tool error observation, with no automatic
+retry or fallback to Wikipedia. Requests have a 30-second timeout; cancelling a
+compiler run cancels its pending tool requests.
+
+For custom compiler applications, pass your existing tools through
+`src.tools.parallel_search.resolve_search_tools(tools, provider="parallel")`
+before constructing `LLMCompiler`. This requires one `search` tool and no existing
+`fetch` tool; omitting the provider preserves your supplied tool list. Each
+`agent.arun(...)` invocation starts a separate research session, shared by its
+searches, fetches and replans.
+
+---
 ## Roadmap
 We are planning to update the following features soon:
 * Tree-of-Thoughts evaluation we used in the paper
