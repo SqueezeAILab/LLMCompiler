@@ -123,43 +123,61 @@ class TaskFetchingUnit:
 
     async def schedule(self):
         """Run all tasks in self.tasks in parallel, respecting dependencies."""
-        # run until all tasks are done
-        while not self._all_tasks_done():
-            # Find tasks with no dependencies or with all dependencies met
-            executable_tasks = self._get_all_executable_tasks()
+        running = []
+        try:
+            # run until all tasks are done
+            while not self._all_tasks_done():
+                # Find tasks with no dependencies or with all dependencies met
+                executable_tasks = self._get_all_executable_tasks()
 
-            for task_name in executable_tasks:
-                asyncio.create_task(self._run_task(self.tasks[task_name]))
-                self.remaining_tasks.remove(task_name)
+                for task_name in executable_tasks:
+                    running.append(
+                        asyncio.create_task(self._run_task(self.tasks[task_name]))
+                    )
+                    self.remaining_tasks.remove(task_name)
 
-            await asyncio.sleep(SCHEDULING_INTERVAL)
+                await asyncio.sleep(SCHEDULING_INTERVAL)
+        finally:
+            for task in running:
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*running, return_exceptions=True)
 
     async def aschedule(self, task_queue: asyncio.Queue[Optional[Task]], func):
         """Asynchronously listen to task_queue and schedule tasks as they arrive."""
-        no_more_tasks = False  # Flag to check if all tasks are received
+        running = []
+        try:
+            no_more_tasks = False  # Flag to check if all tasks are received
 
-        while True:
-            if not no_more_tasks:
-                # Wait for a new task to be added to the queue
-                task = await task_queue.get()
+            while True:
+                if not no_more_tasks:
+                    # Wait for a new task to be added to the queue
+                    task = await task_queue.get()
 
-                # Check for sentinel value indicating end of tasks
-                if task is None:
-                    no_more_tasks = True
+                    # Check for sentinel value indicating end of tasks
+                    if task is None:
+                        no_more_tasks = True
+                    else:
+                        # Parse and set the new tasks
+                        self.set_tasks({task.idx: task})
+
+                # Schedule and run executable tasks
+                executable_tasks = self._get_all_executable_tasks()
+
+                if executable_tasks:
+                    for task_name in executable_tasks:
+                        running.append(
+                            asyncio.create_task(self._run_task(self.tasks[task_name]))
+                        )
+                        self.remaining_tasks.remove(task_name)
+                elif no_more_tasks and self._all_tasks_done():
+                    # Exit the loop if no more tasks are expected and all tasks are done
+                    break
                 else:
-                    # Parse and set the new tasks
-                    self.set_tasks({task.idx: task})
-
-            # Schedule and run executable tasks
-            executable_tasks = self._get_all_executable_tasks()
-
-            if executable_tasks:
-                for task_name in executable_tasks:
-                    asyncio.create_task(self._run_task(self.tasks[task_name]))
-                    self.remaining_tasks.remove(task_name)
-            elif no_more_tasks and self._all_tasks_done():
-                # Exit the loop if no more tasks are expected and all tasks are done
-                break
-            else:
-                # If no executable tasks are found, sleep for the SCHEDULING_INTERVAL
-                await asyncio.sleep(SCHEDULING_INTERVAL)
+                    # If no executable tasks are found, sleep for the SCHEDULING_INTERVAL
+                    await asyncio.sleep(SCHEDULING_INTERVAL)
+        finally:
+            for task in running:
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*running, return_exceptions=True)
